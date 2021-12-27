@@ -1,0 +1,418 @@
+/*
+  Localizable.strings
+  wuwu
+
+  Created by ChenYing on 2021/10/20.
+  
+*/
+
+//MARK: 公用
+Parse = "解析";
+
+Failed = "失败";
+
+And = "和";
+
+Success = "成功";
+
+Save = "保存";
+
+NotSupport = "暂不支持";
+
+PleaseSelect = "请选择";
+
+PleaseInput = "请输入";
+
+Cancel = "取消";
+
+Please = "请";
+
+Tip = "提示";
+
+Okay = "好";
+
+IKnown = "我知道了";
+
+Confirm = "确认";
+
+Exist = "存在";
+
+Problem = "问题";
+
+TipOff = "举报";
+
+TipOffUser = "举报用户";
+
+TipOff = "举报投诉";
+
+Follow = "关注";
+
+Block = "屏蔽";
+
+User = "用户";
+
+Comment = "评论";
+
+Like = "喜欢";
+
+People = "人";
+
+Her = "她";
+
+He = "他";
+
+Loading = "正在加载...";
+
+Become = "成为";
+
+ClickLike = "点赞";
+
+Liked = "已赞";
+
+Video = "视频";
+
+Call = "通话";
+
+Minute = "分钟";
+
+GE = "个";
+
+
+//MARK: 视频聊天 🎬
+Friend = "视频聊天";
+
+Recommend = "推荐";
+
+Active = "活跃";
+
+Newfish = "新人";
+
+HotChatStatus = "人正在热聊";
+
+Online = "在线";
+
+Busy = "忙碌";
+
+Offline = "离线";
+
+UnderCalling = "通话中";
+
+DefaultID = "迷失 ID";
+
+DefaultLocation = "🌏";
+
+DefaultConstellation = "某座";
+
+Unknown = "未知";
+
+NoGiftDesc = "TA还没有礼物哦, 快给TA送礼物吧";
+
+AboutTA = "关于TA";
+
+SayHello = "打招呼";
+
+VideoChat = "视频聊天";
+
+Single = "单身";
+
+EmotionalState = "情感状况";
+
+LocationBelonged = "所在地";
+
+Gender = "性别";
+
+Age = "年龄";
+
+Constellation = "星座";
+
+PersonalityLabel = "个性标签";
+
+FlirtMe = "撩我吧";
+
+HotChating = "热聊中";
+
+
+
+//MARK: 礼物
+SendGift = "送礼物";
+
+GiveGift = "赠送礼物";
+
+GiftWall = "礼物墙";
+
+SendGiftToBeGuardian = "送礼成为守护";
+
+SendGiftSuccessDesc = "礼物赠送成功";
+
+GuardAlertDesc = "送出礼物即可成为守护";
+
+Gift = "礼物";
+
+Perfume = "香水";
+
+GuardianNameplate = "守护铭牌";
+
+ExclusivePhotos = "专属照片";
+
+ExclusiveVideos = "专属视频";
+
+OnlineRemind = "上线提醒";
+
+//MARK: 任务
+Task = "任务";
+
+
+//MARK: 发现
+Discover = "发现";
+
+//MARK: 动态
+Moment = "动态";
+
+
+WhatUWannaSayThisMoment = "这一刻你想说点什么...";
+
+PublishMoment = "发动态";
+
+SaySomething = "随便说点什么吧";
+
+WhoCanSee = "谁可以看";
+
+Public = "公开";
+
+MomentAttention = "请勿上传低俗裸露照片, 严重者将封号处理";
+
+VisibleForAll = "所有人可见";
+
+GuardianExclusive = "守护专属";
+
+VisibleForGuardian = "仅守护我的人可见";
+
+Publish = "发表";
+
+
+//MARK: 漂流瓶
+DriftBottle = "漂流瓶";
+
+
+//MARK: 消息
+Message = "消息";
+
+//MARK: 我的
+Mine = "我的";
+
+MyAlbum = "我的相册";
+
+MyVideo = "我的视频";
+
+CouponCard = "优惠卡券";
+
+MyFollows = "我的关注";
+
+MyFans = "我的粉丝";
+
+ContactService = "联系客服";
+
+CustomerService = "客服";
+
+Setting = "设置";
+
+//MARK: 设置
+RecommentPerson = "推荐人";
+
+Bind = "绑定";
+
+LanguageSetting = "设置语言";
+
+Feedback = "意见反馈";
+
+ClearCache = "清除缓存";
+
+AboutUS = "关于我们";
+
+CancelAccount = "注销账号";
+
+Logout = "退出登录";
+
+ContactQQ = "联系客服QQ: 2820270700";
+
+UserAgreement = "用户协议";
+
+PrivacyPolicy = "隐私政策";
+
+
+EditInfo = "编辑资料";
+
+BasicInfo = "基本资料";
+
+Avatar = "头像";
+
+NickName = "昵称";
+
+Birthday = "生日";
+
+City = "城市";
+
+Occupation = "职业";
+
+Male = "男";
+
+Female = "女";
+
+UploadRealPhoto = "上传真实照片";
+
+UploadRealPhotoDesc = "请上传本人真实照片，会增加社交体验";
+
+
+DoNotDisturbTimeSet = "设定勿扰时间";
+
+DoNotDisturbStatus = "勿扰状态";
+
+DoNotDisturbDesc = "勿扰模式内将不会收到通话邀请";
+
+Set = "设定";
+
+
+TakePicture = "拍照";
+
+ChooseFromAlbum = "从相册选择";
+
+SignPlaceHolder = "个性签名Placeholder";
+
+AnchorVerify = "认证成为主播";
+
+FillPersonInfo = "完善个人资料";
+
+UploadPersonalPhoto = "上传个人照片";
+
+UploadPersonalVideo = "上传个人视频";
+
+RealVerify = "真人认证";
+
+Optional = "可选";
+
+Completed = "已完善";
+
+Reviewing = "审核中";
+
+GoUpload = "去上传";
+
+GoVerify = "去认证";
+
+AnchorVerifyTip = "照片和视频修改需重新提交审核， 否则将无法生效";
+
+Submit = "提交";
+
+CompleteInformation = "完善资料";
+
+VoidIntroduction = "语音介绍";
+
+VideoAnswering = "视频接听";
+
+VoiceAnswering = "语音接听";
+
+PrivateMsgChat = "私信聊天";
+
+
+//MARK: 标签
+AtLeastChooseOneTag = "至少选择一个标签";
+
+ForFree = "免费";
+
+TagCute = "可爱";
+
+TagSexy = "性感";
+
+TagCharming = "妩媚";
+
+TagLolita = "萝莉";
+
+TagLady = "御姐";
+
+TagOptimistic = "开朗";
+
+TagLively = "活泼";
+
+TagEnthusiasm = "热情";
+
+TagHighCold = "高冷";
+
+TagHandsom = "帅气";
+
+TagHandsomAndSpirited = "英俊";
+
+TagOverbearing = "霸道";
+
+TagMelancholy = "忧郁";
+
+CreateMyTag = "创建我的标签, 请输入2-6个标签";
+
+
+VideoCard = "视频卡";
+
+ChatCard = "聊天券";
+
+VoiceCard = "语音卡";
+
+Guard = "守护";
+
+Guarded = "已守护";
+
+GuardCard = "守护卡";
+
+VideoCardDescription= "每次通话扣除1张";
+
+ChatCardDescription = "每条消息扣除1张";
+
+VoiceCardDescription = "每次语音扣除一张";
+
+GuardCardDescription = "每次守护扣除一张";
+
+Remain = "还剩";
+
+Today = "今日";
+
+Expired = "到期";
+
+
+//MARK: 举报投诉
+PornographicVulgarity = "色情低俗";
+
+FraudCheatMoney = "欺诈骗钱";
+
+HarassmentThreat = "骚扰威胁";
+
+PhotoNotSelf = "照片非本人";
+
+PullPeopleAds = "拉人广告";
+
+InduceThirdPlatformTrading = "诱导三方平台交易";
+
+NotAdult = "未成年";
+
+PoliticalReligion = "政治宗教";
+
+MaliciousAbuse = "恶意辱骂";
+
+GenderFraud = "性别造假";
+
+
+//MARK: 充值
+My = "我的";
+
+ChatCoin = "聊币";
+
+BalanceLow = "余额不足";
+
+PleaseRecharge = "请先充值";
+
+Recharge = "充值";
+
+RechargeCenter = "充值中心";
+
+RechargeDesc = "充值的聊币用于平台的聊币消费";
+
+RechargeImmediately = "立即充值";
+
+NoSignDesc = "这位朋友太懒了， 还没有签名~";
+
+
