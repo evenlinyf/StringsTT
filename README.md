@@ -27,6 +27,7 @@ intlSwiftFilePath="$intlPath/$intlFileName.swift"
 ## 3. Change the Localizable.strings
  
 International = "国际化";
+
 InternationnalIn = "国际化在%@";
 
 ## 4. Excute 'fastlane intl' in the terminal
