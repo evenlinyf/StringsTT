@@ -1,0 +1,10 @@
+/*
+  Localizable.strings
+  wuwu
+
+  Created by ChenYing on 2021/10/20.
+  
+*/
+
+International = "国际化";
+InternationnalIn = "国际化在%@";

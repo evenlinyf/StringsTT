@@ -1,15 +1,12 @@
 #!/bin/bash
 
 createDate=`date +%Y-%m-%d_%H:%M`
-projPath="../"
-echo $projPath
+projPath="./"
 
-stringFilePath="$projPath/projName/zh-Hans.lproj/Localizable.strings"
+stringFilePath="$projPath/Localizable.strings"
 
-#如果存在这个字符， 就会解析
-tagString=";"
-
-intlPath="$projPath/wuwu"
+#指定Intl.swift 存放的路径
+intlPath="$projPath"
 intlFileName="Intl"
 intlSwiftFilePath="$intlPath/$intlFileName.swift"
 
@@ -21,16 +18,16 @@ else
 	cd $intlPath
 fi
 
-rm *.swift
+rm $intlFileName.swift
 
 if [ ! -f $intlSwiftFilePath ]; then
-	echo "swift 文件已删除， 正在重新创建"
+	echo "Intl.swift deleted， recreating"
 	cat >$intlSwiftFilePath<<EOF
 //
 //  Intl.swift
-//  wuwu
+//  
 //
-//  Created by IntlCreator shell script on $createDate.
+//  Created by IntlCreator on $createDate.
 //
 
 import UIKit
@@ -41,41 +38,52 @@ struct Intl {
 		return NSLocalizedString(string, comment: "")
 	}
 
-	static func strings(_ strings: String...) -> String {
-		let result = strings.reduce("", +)
-		return result
-	}
-}
 EOF
 	echo "swift intl file created 🎉🎉🎉"
 else
 	echo "swift file already exist"
 fi
 
-cat >>$intlSwiftFilePath<<EOF
-extension Intl {
-
-EOF
-
 #逐行解析strings文件
 if [ ! -x "$stringFilePath" ]; then
 	
 	cat $stringFilePath | while read intlLine; do
 		#筛选出包含分号的一行
-		result=$(echo $intlLine | grep "${tagString}")
+		result=$(echo $intlLine | grep ";")
 		if [[ "$result" != "" ]]; then
 			
-#			echo $intlLine
+			#			echo $intlLine
 			#取出 Intl key
 			#清空所有的空格
 			clearWhiteSpaceResult=${intlLine//" "/""}
-			intlKey=${clearWhiteSpaceResult/=*}
-#			echo $intlKey
-			#向Intl.swift 拼接类属性
-			cat >>$intlSwiftFilePath<<EOF
-	/// $intlLine
-	static var $intlKey: String{ get { return Intl.string("$intlKey") } }
+			
+			#截取=号左边的字符
+			intlKey=${clearWhiteSpaceResult%=*}
+			#			echo $intlKey
+			
+			#截取=号右边的字符
+			intlValue=${clearWhiteSpaceResult#*=}
+			comment=${intlValue//"\""/""}
+			comment=${comment//";"/""}
+			echo $comment
+			if [[ $intlValue =~ "%" ]]; then
+#				echo $intlValue
+				#向Intl.swift 拼接类属性
+				cat >>$intlSwiftFilePath<<EOF
+	/// $comment
+	static func $intlKey(_ arg: CVarArg) -> String {
+		return String(format: Intl.string("$intlKey"), arg)
+	}
 EOF
+			else
+				#向Intl.swift 拼接类属性
+				cat >>$intlSwiftFilePath<<EOF
+	/// $comment
+	static var $intlKey: String = Intl.string("$intlKey")
+EOF
+			fi
+			
+
 		fi
 		
 	done
@@ -85,5 +93,6 @@ cat >>$intlSwiftFilePath<<EOF
 
 }
 EOF
-echo "Intl Class 文件创建成功 🎉🎉🎉 "
+
+echo "Intl.swift created succeeded 🎉🎉🎉"
 open $intlSwiftFilePath
