@@ -5,7 +5,7 @@ Create Intl Class for Swift with stringsFile
 
 put IntlCreator.sh in the fastlane directory
 
-```
+``` ruby
     lane :intl do
         sh "bash ./IntlCreator.sh"
     end
@@ -13,7 +13,7 @@ put IntlCreator.sh in the fastlane directory
 
 ## 2. Correct the path in the IntlCreator.sh for Intl.swift and Localizable.strings
 
-```
+``` shell
 projPath="./"
 
 stringFilePath="$projPath/Localizable.strings"
@@ -54,7 +54,7 @@ struct Intl {
 
 You can use it like this
 
-```
+``` swift
 
 Intl.International
 
