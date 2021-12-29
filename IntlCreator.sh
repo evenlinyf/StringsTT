@@ -25,7 +25,7 @@ if [ ! -f $intlSwiftFilePath ]; then
 	cat >$intlSwiftFilePath<<EOF
 //
 //  Intl.swift
-//
+//	https://github.com/evenlinyf/IntlCreator
 //
 //  Created by IntlCreator on $createDate.
 //
