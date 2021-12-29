@@ -42,7 +42,7 @@ struct Intl {
     }
 
     /// 国际化
-    static var International: String = Intl.string("International")
+    static let International: String = Intl.string("International")
     /// 国际化在%@
     static func InternationnalIn(_ arg: CVarArg) -> String {
         return String(format: Intl.string("InternationnalIn"), arg)
