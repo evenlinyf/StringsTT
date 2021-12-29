@@ -25,7 +25,7 @@ if [ ! -f $intlSwiftFilePath ]; then
 	cat >$intlSwiftFilePath<<EOF
 //
 //  Intl.swift
-//  
+//
 //
 //  Created by IntlCreator on $createDate.
 //
@@ -52,23 +52,23 @@ if [ ! -x "$stringFilePath" ]; then
 		result=$(echo $intlLine | grep ";")
 		if [[ "$result" != "" ]]; then
 			
-			#			echo $intlLine
+			#            echo $intlLine
 			#取出 Intl key
 			#清空所有的空格
 			clearWhiteSpaceResult=${intlLine//" "/""}
 			
 			#截取=号左边的字符
 			intlKey=${clearWhiteSpaceResult%=*}
-			#			echo $intlKey
+			#            echo $intlKey
 			
 			#截取=号右边的字符
 			intlValue=${clearWhiteSpaceResult#*=}
 			comment=${intlValue//"\""/""}
 			comment=${comment//";"/""}
-			echo $comment
+			
 			if [[ $intlValue =~ "%" ]]; then
-#				echo $intlValue
-				#向Intl.swift 拼接类属性
+				#echo $intlValue
+				#向Intl.swift 拼接方法
 				cat >>$intlSwiftFilePath<<EOF
 	/// $comment
 	static func $intlKey(_ arg: CVarArg) -> String {
@@ -79,11 +79,11 @@ EOF
 				#向Intl.swift 拼接类属性
 				cat >>$intlSwiftFilePath<<EOF
 	/// $comment
-	static var $intlKey: String = Intl.string("$intlKey")
+	static let $intlKey: String = Intl.string("$intlKey")
 EOF
 			fi
 			
-
+			
 		fi
 		
 	done
