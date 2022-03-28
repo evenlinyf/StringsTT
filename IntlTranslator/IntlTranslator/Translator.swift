@@ -12,7 +12,7 @@ struct Translator {
     typealias TComplete = (String?) -> Void
     
     static func translate(content: String, language: String, complete: @escaping TComplete) {
-        let path = <#TranslateAPIPath#>.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let path = ITConstant.apiPath(content: content, to: language).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         guard let path = path else {
             complete(nil)
             return
