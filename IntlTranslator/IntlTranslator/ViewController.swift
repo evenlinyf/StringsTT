@@ -26,6 +26,8 @@ class ViewController: NSViewController {
     var transKeys: [String] = []
     var transProgress: Int = 0
     
+    var concurrentCount: Int = 100
+    
     var errorArray: [String] = []
     
     var parser: StringsParser?
@@ -80,64 +82,46 @@ class ViewController: NSViewController {
         self.indicator.startAnimation(nil)
         self.transKeys = (originalDic as NSDictionary).allKeys as! [String]
         translate()
-        
-//        for (key, value) in originalDic {
-//            guard translatedDic[key] == nil else {
-//                continue
-//            }
-////            print("\(key) = \(value)")
-//
-//            self.indicator.startAnimation(nil)
-//            self.translate(key: key, content: value)
-//
-//        }
-        
     }
     
     func translate() {
-        let key = transKeys[transProgress]
         
-        guard translatedDic[key] == nil else {
-            transProgress += 1
-            translate()
-            return
+        for i in 0..<concurrentCount {
+            let theIndex = transProgress * concurrentCount + i
+            guard theIndex < transKeys.count else {
+                break
+            }
+            let key = transKeys[theIndex]
+            guard translatedDic[key] == nil else {
+                continue
+            }
+            self.translate(key: key, content: originalDic[key]!)
         }
-        self.translate(key: key, content: originalDic[key]!)
+        
     }
     
     func translate(key: String, content: String) {
         Translator.translate(content: content, language: language.stringValue) { [unowned self] result in
             
             if let result = result {
-                self.translatedDic[key] = result
+                //去除引号
+                self.translatedDic[key] = result.replacingOccurrences(of: "\"", with: "")
             } else {
                 self.translatedDic[key] = "⚠️⚠️⚠️ Translate Failed ⚠️⚠️⚠️"
                 self.errorArray.append(key)
             }
             
             DispatchQueue.main.async {
-                self.label.stringValue = "Translating \(self.transProgress)/\(self.originalDic.count)"
+                self.label.stringValue = "Translating \(self.translatedDic.count)/\(self.originalDic.count)"
             }
             if self.translatedDic.count == self.originalDic.count {
                 self.indicator.stopAnimation(nil)
                 self.successAction()
-                
-//                if self.errorArray.count > 0 {
-//                    DispatchQueue.main.async {
-//                        self.label.stringValue = """
-//翻译结束
-//总共翻译 \(self.originalDic.count) 条
-//翻译失败 \(self.errorArray.count) 条
-//正在重试失败的翻译
-//"""
-//                    }
-//                    self.retryFailedTranslations()
-//                } else {
-//                    self.successAction()
-//                }
-            } else {
+            } else if translatedDic.count%concurrentCount == 0 {
                 self.transProgress += 1
                 self.translate()
+            } else {
+                
             }
             
         }
@@ -154,37 +138,6 @@ class ViewController: NSViewController {
         }
         self.exportTranslatedFile()
         print(self.originalDic.filter({self.errorArray.contains($0.key)}))
-    }
-    
-    func retryFailedTranslations() {
-        print("🌏🌏🌏 重试失败的翻译 🌏🌏🌏")
-        var count = 0
-        
-        var secondErrorArray: [String] = []
-        
-        for key in errorArray {
-            guard let value = originalDic[key] else { continue }
-            self.indicator.startAnimation(nil)
-            Translator.translate(content: value, language: language.stringValue) { [unowned self] result in
-                count += 1
-                if let result = result {
-                    self.translatedDic[key] = result
-                } else {
-                    secondErrorArray.append(key)
-                    self.translatedDic[key] = "⚠️⚠️⚠️ Translate Failed ⚠️⚠️⚠️"
-                }
-                DispatchQueue.main.async {
-                    self.label.stringValue = "Retry Translating \(count)/\(self.errorArray.count)"
-                }
-                if count == self.errorArray.count {
-                    self.errorArray = secondErrorArray
-                    self.indicator.stopAnimation(nil)
-                    self.successAction()
-                    print("⚠️⚠️⚠️ 翻译错误的键值对 ⚠️⚠️⚠️")
-                    print(self.originalDic.filter({self.errorArray.contains($0.key)}))
-                }
-            }
-        }
     }
     
     override var representedObject: Any? {
