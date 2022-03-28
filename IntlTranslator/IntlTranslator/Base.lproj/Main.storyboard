@@ -721,9 +721,10 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nrV-jg-5rQ">
-                                <rect key="frame" x="212" y="20" width="56" height="40"/>
+                                <rect key="frame" x="190" y="20" width="100" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="ZjD-Ul-gqd"/>
+                                    <constraint firstAttribute="width" constant="100" id="omm-Xh-5Zm"/>
                                 </constraints>
                                 <buttonCell key="cell" type="inline" title="一键翻译" bezelStyle="inline" imagePosition="overlaps" alignment="center" borderStyle="border" inset="2" id="Aeg-mv-fCj">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -762,6 +763,7 @@
                                         <string>jp</string>
                                         <string>de</string>
                                         <string>fra</string>
+                                        <string>id</string>
                                     </objectValues>
                                 </comboBoxCell>
                                 <connections>
@@ -769,7 +771,7 @@
                                 </connections>
                             </comboBox>
                             <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="smE-IZ-veC">
-                                <rect key="frame" x="276" y="32" width="16" height="16"/>
+                                <rect key="frame" x="298" y="32" width="16" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="16" id="DrK-JS-aiJ"/>
                                     <constraint firstAttribute="height" constant="16" id="jF7-xU-dkP"/>
@@ -803,7 +805,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="132" y="741"/>
         </scene>
     </scenes>
 </document>

@@ -23,6 +23,9 @@ class ViewController: NSViewController {
     
     var translatedDic: [String: String] = [:]
     
+    var transKeys: [String] = []
+    var transProgress: Int = 0
+    
     var errorArray: [String] = []
     
     var parser: StringsParser?
@@ -58,7 +61,9 @@ class ViewController: NSViewController {
         self.originalDic.removeAll()
         self.translatedDic.removeAll()
         errorArray.removeAll()
-        self.label.stringValue = "等待翻译"
+        transKeys.removeAll()
+        transProgress = 0
+        self.label.stringValue = "正在启动翻译..."
     }
     
 
@@ -72,22 +77,37 @@ class ViewController: NSViewController {
         guard originalDic.count > 0 else {
             return
         }
+        self.indicator.startAnimation(nil)
+        self.transKeys = (originalDic as NSDictionary).allKeys as! [String]
+        translate()
         
-        for (key, value) in originalDic {
-            guard translatedDic[key] == nil else {
-                continue
-            }
-//            print("\(key) = \(value)")
-            
-            self.indicator.startAnimation(nil)
-            self.translate(key: key, content: value)
-
-        }
+//        for (key, value) in originalDic {
+//            guard translatedDic[key] == nil else {
+//                continue
+//            }
+////            print("\(key) = \(value)")
+//
+//            self.indicator.startAnimation(nil)
+//            self.translate(key: key, content: value)
+//
+//        }
         
     }
     
+    func translate() {
+        let key = transKeys[transProgress]
+        
+        guard translatedDic[key] == nil else {
+            transProgress += 1
+            translate()
+            return
+        }
+        self.translate(key: key, content: originalDic[key]!)
+    }
+    
     func translate(key: String, content: String) {
-        Translator.translate(content: content, language: language.stringValue) { result in
+        Translator.translate(content: content, language: language.stringValue) { [unowned self] result in
+            
             if let result = result {
                 self.translatedDic[key] = result
             } else {
@@ -96,33 +116,44 @@ class ViewController: NSViewController {
             }
             
             DispatchQueue.main.async {
-                self.label.stringValue = "Translating \(self.translatedDic.count)/\(self.originalDic.count)"
-                if self.translatedDic.count == self.originalDic.count {
-                    self.indicator.stopAnimation(nil)
-                    if self.errorArray.count > 0 {
-                        self.label.stringValue = """
-翻译结束
-总共翻译 \(self.originalDic.count) 条
-翻译失败 \(self.errorArray.count) 条
-正在重试失败的翻译
-"""
-                        self.retryFailedTranslations()
-                    } else {
-                        self.successAction()
-                    }
-                }
+                self.label.stringValue = "Translating \(self.transProgress)/\(self.originalDic.count)"
             }
+            if self.translatedDic.count == self.originalDic.count {
+                self.indicator.stopAnimation(nil)
+                self.successAction()
+                
+//                if self.errorArray.count > 0 {
+//                    DispatchQueue.main.async {
+//                        self.label.stringValue = """
+//翻译结束
+//总共翻译 \(self.originalDic.count) 条
+//翻译失败 \(self.errorArray.count) 条
+//正在重试失败的翻译
+//"""
+//                    }
+//                    self.retryFailedTranslations()
+//                } else {
+//                    self.successAction()
+//                }
+            } else {
+                self.transProgress += 1
+                self.translate()
+            }
+            
         }
     }
     
     func successAction() {
+        DispatchQueue.main.async {
             self.label.stringValue = """
 翻译结束 🎉🎉🎉
 总共翻译 \(self.originalDic.count) 条
 翻译失败 \(self.errorArray.count) 条
 文件已导出到桌面
 """
-            self.exportTranslatedFile()
+        }
+        self.exportTranslatedFile()
+        print(self.originalDic.filter({self.errorArray.contains($0.key)}))
     }
     
     func retryFailedTranslations() {
@@ -134,7 +165,7 @@ class ViewController: NSViewController {
         for key in errorArray {
             guard let value = originalDic[key] else { continue }
             self.indicator.startAnimation(nil)
-            Translator.translate(content: value, language: language.stringValue) { result in
+            Translator.translate(content: value, language: language.stringValue) { [unowned self] result in
                 count += 1
                 if let result = result {
                     self.translatedDic[key] = result
@@ -144,11 +175,13 @@ class ViewController: NSViewController {
                 }
                 DispatchQueue.main.async {
                     self.label.stringValue = "Retry Translating \(count)/\(self.errorArray.count)"
-                    if count == self.errorArray.count {
-                        self.errorArray = secondErrorArray
-                        self.indicator.stopAnimation(nil)
-                        self.successAction()
-                    }
+                }
+                if count == self.errorArray.count {
+                    self.errorArray = secondErrorArray
+                    self.indicator.stopAnimation(nil)
+                    self.successAction()
+                    print("⚠️⚠️⚠️ 翻译错误的键值对 ⚠️⚠️⚠️")
+                    print(self.originalDic.filter({self.errorArray.contains($0.key)}))
                 }
             }
         }
