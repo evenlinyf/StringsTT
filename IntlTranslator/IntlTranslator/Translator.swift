@@ -27,8 +27,7 @@ struct Translator {
         let session = URLSession(configuration: URLSessionConfiguration.default)
         
         let task = session.dataTask(with: req) { data, resp, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription as Any)
+            guard let data = data else {
                 complete(nil)
                 return
             }
@@ -43,7 +42,7 @@ struct Translator {
                 }
                 if let translatedString = respDic["data"] as? String {
                     complete(translatedString)
-                    print("\(content) ---> \(translatedString)")
+//                    print("\(content) ---> \(translatedString)")
                 } else {
                     complete(nil)
                 }

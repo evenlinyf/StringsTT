@@ -721,9 +721,8 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nrV-jg-5rQ">
-                                <rect key="frame" x="200" y="20" width="80" height="40"/>
+                                <rect key="frame" x="212" y="20" width="56" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="9Me-h6-zax"/>
                                     <constraint firstAttribute="height" constant="40" id="ZjD-Ul-gqd"/>
                                 </constraints>
                                 <buttonCell key="cell" type="inline" title="一键翻译" bezelStyle="inline" imagePosition="overlaps" alignment="center" borderStyle="border" inset="2" id="Aeg-mv-fCj">
@@ -735,7 +734,7 @@
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="S6v-KI-LDg">
-                                <rect key="frame" x="28" y="160" width="424" height="16"/>
+                                <rect key="frame" x="209" y="160" width="62" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="等待翻译" id="41v-CS-yxR">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -743,23 +742,34 @@
                                 </textFieldCell>
                             </textField>
                             <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="n21-NP-VVz">
-                                <rect key="frame" x="360" y="287" width="103" height="27"/>
+                                <rect key="frame" x="360" y="286" width="103" height="28"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="S0k-9m-ffz"/>
+                                    <constraint firstAttribute="width" constant="100" id="Pox-Jw-Ujm"/>
                                 </constraints>
-                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="right" title="en" bezelStyle="round" completes="NO" numberOfVisibleItems="5" id="iby-3I-f8M">
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="right" title="en" bezelStyle="round" numberOfVisibleItems="5" id="iby-3I-f8M">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <objectValues>
                                         <string>en</string>
+                                        <string>zh</string>
                                         <string>tw</string>
                                         <string>spa</string>
+                                        <string>ara</string>
+                                        <string>pt</string>
+                                        <string>may</string>
+                                        <string>ru</string>
+                                        <string>jp</string>
+                                        <string>de</string>
+                                        <string>fra</string>
                                     </objectValues>
                                 </comboBoxCell>
+                                <connections>
+                                    <action selector="didSelectLanguage:" target="XfG-lQ-9wD" id="zCb-u0-N96"/>
+                                </connections>
                             </comboBox>
                             <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="smE-IZ-veC">
-                                <rect key="frame" x="288" y="32" width="16" height="16"/>
+                                <rect key="frame" x="276" y="32" width="16" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="16" id="DrK-JS-aiJ"/>
                                     <constraint firstAttribute="height" constant="16" id="jF7-xU-dkP"/>
@@ -767,14 +777,15 @@
                             </progressIndicator>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="S6v-KI-LDg" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="30" id="1xS-uf-v4p"/>
+                            <constraint firstItem="S6v-KI-LDg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="1xS-uf-v4p"/>
+                            <constraint firstItem="n21-NP-VVz" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="24" id="3Vy-ic-asC"/>
                             <constraint firstItem="guj-vO-BCa" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="65B-Wc-O9K"/>
                             <constraint firstItem="nrV-jg-5rQ" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="9B2-BL-ntl"/>
                             <constraint firstItem="smE-IZ-veC" firstAttribute="centerY" secondItem="nrV-jg-5rQ" secondAttribute="centerY" id="Ak0-7v-auy"/>
                             <constraint firstItem="S6v-KI-LDg" firstAttribute="centerY" secondItem="m2S-Jp-Qdl" secondAttribute="centerY" id="C7k-hw-bPM"/>
                             <constraint firstItem="n21-NP-VVz" firstAttribute="leading" secondItem="guj-vO-BCa" secondAttribute="trailing" constant="20" id="DPF-p5-sdQ"/>
                             <constraint firstItem="smE-IZ-veC" firstAttribute="leading" secondItem="nrV-jg-5rQ" secondAttribute="trailing" constant="8" symbolic="YES" id="JcW-cY-Awo"/>
-                            <constraint firstAttribute="trailing" secondItem="S6v-KI-LDg" secondAttribute="trailing" constant="30" id="T9l-ez-ek3"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="S6v-KI-LDg" secondAttribute="trailing" id="T9l-ez-ek3"/>
                             <constraint firstItem="guj-vO-BCa" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="Z1V-UN-Ls9"/>
                             <constraint firstItem="S6v-KI-LDg" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="eXH-Uf-yqe"/>
                             <constraint firstItem="n21-NP-VVz" firstAttribute="centerY" secondItem="guj-vO-BCa" secondAttribute="centerY" id="evd-PR-0FR"/>
