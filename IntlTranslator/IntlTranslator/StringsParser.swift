@@ -49,7 +49,7 @@ class StringsParser: NSObject {
         let fileString = """
         /*
           Localizable.strings
-          Intl Translator macOS App
+          Intl Translator
 
           Created by EvenLin on \(dateString)
           
