@@ -743,9 +743,10 @@
                                 </textFieldCell>
                             </textField>
                             <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="n21-NP-VVz">
-                                <rect key="frame" x="360" y="286" width="103" height="28"/>
+                                <rect key="frame" x="348" y="287" width="83" height="27"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="Pox-Jw-Ujm"/>
+                                    <constraint firstAttribute="height" constant="21" id="FBj-pQ-Git"/>
+                                    <constraint firstAttribute="width" constant="80" id="lQW-Fl-gI9"/>
                                 </constraints>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="right" title="en" bezelStyle="round" numberOfVisibleItems="5" id="iby-3I-f8M">
                                     <font key="font" metaFont="system"/>
@@ -777,25 +778,41 @@
                                     <constraint firstAttribute="height" constant="16" id="jF7-xU-dkP"/>
                                 </constraints>
                             </progressIndicator>
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Dzm-Tp-9pl">
+                                <rect key="frame" x="437" y="287" width="25" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="9T6-vD-7fb"/>
+                                    <constraint firstAttribute="height" constant="20" id="JBA-Km-qVI"/>
+                                </constraints>
+                                <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aRN-0w-BbU">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="helpAction:" target="XfG-lQ-9wD" id="v0S-NI-ahu"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="S6v-KI-LDg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="1xS-uf-v4p"/>
-                            <constraint firstItem="n21-NP-VVz" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="24" id="3Vy-ic-asC"/>
+                            <constraint firstItem="n21-NP-VVz" firstAttribute="leading" secondItem="guj-vO-BCa" secondAttribute="trailing" constant="8" symbolic="YES" id="4oh-v8-J20"/>
+                            <constraint firstAttribute="trailing" secondItem="Dzm-Tp-9pl" secondAttribute="trailing" constant="20" symbolic="YES" id="54N-DD-dVL"/>
                             <constraint firstItem="guj-vO-BCa" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="65B-Wc-O9K"/>
                             <constraint firstItem="nrV-jg-5rQ" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="9B2-BL-ntl"/>
                             <constraint firstItem="smE-IZ-veC" firstAttribute="centerY" secondItem="nrV-jg-5rQ" secondAttribute="centerY" id="Ak0-7v-auy"/>
                             <constraint firstItem="S6v-KI-LDg" firstAttribute="centerY" secondItem="m2S-Jp-Qdl" secondAttribute="centerY" id="C7k-hw-bPM"/>
-                            <constraint firstItem="n21-NP-VVz" firstAttribute="leading" secondItem="guj-vO-BCa" secondAttribute="trailing" constant="20" id="DPF-p5-sdQ"/>
                             <constraint firstItem="smE-IZ-veC" firstAttribute="leading" secondItem="nrV-jg-5rQ" secondAttribute="trailing" constant="8" symbolic="YES" id="JcW-cY-Awo"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="S6v-KI-LDg" secondAttribute="trailing" id="T9l-ez-ek3"/>
                             <constraint firstItem="guj-vO-BCa" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="Z1V-UN-Ls9"/>
+                            <constraint firstItem="Dzm-Tp-9pl" firstAttribute="leading" secondItem="n21-NP-VVz" secondAttribute="trailing" constant="12" symbolic="YES" id="ci4-Zm-YAr"/>
                             <constraint firstItem="S6v-KI-LDg" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="eXH-Uf-yqe"/>
-                            <constraint firstItem="n21-NP-VVz" firstAttribute="centerY" secondItem="guj-vO-BCa" secondAttribute="centerY" id="evd-PR-0FR"/>
-                            <constraint firstAttribute="trailing" secondItem="n21-NP-VVz" secondAttribute="trailing" constant="20" symbolic="YES" id="gd0-Xt-Rtv"/>
                             <constraint firstAttribute="bottom" secondItem="nrV-jg-5rQ" secondAttribute="bottom" constant="20" symbolic="YES" id="lmE-yd-BZ9"/>
+                            <constraint firstItem="Dzm-Tp-9pl" firstAttribute="centerY" secondItem="guj-vO-BCa" secondAttribute="centerY" id="sFS-zV-7y3"/>
+                            <constraint firstItem="n21-NP-VVz" firstAttribute="centerY" secondItem="guj-vO-BCa" secondAttribute="centerY" id="vhz-IT-Eqd"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="helpBtn" destination="Dzm-Tp-9pl" id="TYO-AF-70t"/>
                         <outlet property="indicator" destination="smE-IZ-veC" id="F6S-U8-YQa"/>
                         <outlet property="label" destination="S6v-KI-LDg" id="kdw-co-aeA"/>
                         <outlet property="language" destination="n21-NP-VVz" id="oL8-JZ-gBf"/>

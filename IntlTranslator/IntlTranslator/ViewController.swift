@@ -18,7 +18,7 @@ class ViewController: NSViewController {
     @IBOutlet weak var indicator: NSProgressIndicator!
     
     @IBOutlet weak var transBtn: NSButton!
-
+    
     var transProgress: Int = 0
     
     private var data = DataCenter()
@@ -37,11 +37,8 @@ class ViewController: NSViewController {
         self.label.stringValue = "等待翻译"
     }
     
-    func reset() {
-        self.parser = nil
-        self.data = DataCenter()
-        transProgress = 0
-        self.label.stringValue = "正在启动翻译..."
+    @IBAction func helpAction(_ sender: NSButton) {
+        NSWorkspace.shared.open(URL(string: ITConstant.languageCodePath)!)
     }
 
     @IBAction func transBtnDidClick(_ sender: NSButton) {
@@ -52,6 +49,8 @@ class ViewController: NSViewController {
         
         if let originalDic = parser?.parseString() {
             data.originalDic = originalDic
+        } else {
+            self.label.stringValue = "没有任何内容"
         }
         guard data.originalDic.count > 0 else {
             return
@@ -61,6 +60,13 @@ class ViewController: NSViewController {
             self.label.stringValue = "检测到 \(self.data.transKeys.count) 条待翻译数据"
         }
         translate()
+    }
+    
+    func reset() {
+        self.parser = nil
+        self.data = DataCenter()
+        transProgress = 0
+        self.label.stringValue = "等待翻译"
     }
     
     func translate() {
@@ -90,13 +96,7 @@ class ViewController: NSViewController {
                 self.data.errorArray.append(key)
             }
             
-            DispatchQueue.main.async {
-                self.label.stringValue = self.data.progressDescription()
-            }
-            
             self.checkCompleted()
-            
-            self.checkProgress()
         }
     }
     
@@ -106,6 +106,11 @@ class ViewController: NSViewController {
                 self.indicator.stopAnimation(nil)
             }
             successAction()
+        } else {
+            DispatchQueue.main.async {
+                self.label.stringValue = self.data.progressDescription()
+            }
+            self.checkProgress()
         }
     }
     
