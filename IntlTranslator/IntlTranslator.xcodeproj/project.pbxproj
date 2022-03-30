@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9625CE9C27F29ABA001C0BCB /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9625CE9B27F29ABA001C0BCB /* DataCenter.swift */; };
+		9625CE9C27F29ABA001C0BCB /* StringFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9625CE9B27F29ABA001C0BCB /* StringFile.swift */; };
 		9625CE9E27F2AE55001C0BCB /* LanguageList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9625CE9D27F2AE55001C0BCB /* LanguageList.plist */; };
 		963930E927F1A4230009CAC6 /* ITConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963930E827F1A4230009CAC6 /* ITConstant.swift */; };
 		9662347C27F145B00036CD0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9662347B27F145B00036CD0F /* AppDelegate.swift */; };
@@ -20,7 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9625CE9B27F29ABA001C0BCB /* DataCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCenter.swift; sourceTree = "<group>"; };
+		9625CE9B27F29ABA001C0BCB /* StringFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFile.swift; sourceTree = "<group>"; };
 		9625CE9D27F2AE55001C0BCB /* LanguageList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = LanguageList.plist; sourceTree = "<group>"; };
 		963930E827F1A4230009CAC6 /* ITConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITConstant.swift; sourceTree = "<group>"; };
 		9662347827F145B00036CD0F /* IntlTranslator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntlTranslator.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,7 +66,7 @@
 			children = (
 				9662347B27F145B00036CD0F /* AppDelegate.swift */,
 				9662347D27F145B00036CD0F /* ViewController.swift */,
-				9625CE9B27F29ABA001C0BCB /* DataCenter.swift */,
+				9625CE9B27F29ABA001C0BCB /* StringFile.swift */,
 				9662349027F15A450036CD0F /* Translator.swift */,
 				963930E827F1A4230009CAC6 /* ITConstant.swift */,
 				9662348A27F149EC0036CD0F /* StringsParser.swift */,
@@ -153,7 +153,7 @@
 				9662348B27F149EC0036CD0F /* StringsParser.swift in Sources */,
 				9662348D27F14BF70036CD0F /* File.swift in Sources */,
 				9662349127F15A450036CD0F /* Translator.swift in Sources */,
-				9625CE9C27F29ABA001C0BCB /* DataCenter.swift in Sources */,
+				9625CE9C27F29ABA001C0BCB /* StringFile.swift in Sources */,
 				9662347E27F145B00036CD0F /* ViewController.swift in Sources */,
 				963930E927F1A4230009CAC6 /* ITConstant.swift in Sources */,
 				9662347C27F145B00036CD0F /* AppDelegate.swift in Sources */,
@@ -293,6 +293,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = IntlTranslator/IntlTranslator.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -324,6 +325,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = IntlTranslator/IntlTranslator.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;

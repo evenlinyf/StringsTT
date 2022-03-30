@@ -719,6 +719,10 @@
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <action selector="textFieldAction:" target="XfG-lQ-9wD" id="g7E-yz-fyG"/>
+                                    <outlet property="delegate" destination="XfG-lQ-9wD" id="M5U-Cc-1cA"/>
+                                </connections>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nrV-jg-5rQ">
                                 <rect key="frame" x="190" y="20" width="100" height="40"/>
@@ -792,12 +796,25 @@
                                     <action selector="helpAction:" target="XfG-lQ-9wD" id="v0S-NI-ahu"/>
                                 </connections>
                             </button>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bsu-UE-ewa">
+                                <rect key="frame" x="20" y="236" width="320" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="JOh-8j-RrM"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="请将已翻译的文件拖到这里" bezelStyle="round" id="8cg-lx-leo">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="bsu-UE-ewa" firstAttribute="width" secondItem="guj-vO-BCa" secondAttribute="width" id="0eJ-A1-C1Q"/>
                             <constraint firstItem="S6v-KI-LDg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="1xS-uf-v4p"/>
                             <constraint firstItem="n21-NP-VVz" firstAttribute="leading" secondItem="guj-vO-BCa" secondAttribute="trailing" constant="8" symbolic="YES" id="4oh-v8-J20"/>
                             <constraint firstAttribute="trailing" secondItem="Dzm-Tp-9pl" secondAttribute="trailing" constant="20" symbolic="YES" id="54N-DD-dVL"/>
                             <constraint firstItem="guj-vO-BCa" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="65B-Wc-O9K"/>
+                            <constraint firstItem="bsu-UE-ewa" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="6wI-d4-wnG"/>
                             <constraint firstItem="nrV-jg-5rQ" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="9B2-BL-ntl"/>
                             <constraint firstItem="smE-IZ-veC" firstAttribute="centerY" secondItem="nrV-jg-5rQ" secondAttribute="centerY" id="Ak0-7v-auy"/>
                             <constraint firstItem="S6v-KI-LDg" firstAttribute="centerY" secondItem="m2S-Jp-Qdl" secondAttribute="centerY" id="C7k-hw-bPM"/>
@@ -809,6 +826,7 @@
                             <constraint firstAttribute="bottom" secondItem="nrV-jg-5rQ" secondAttribute="bottom" constant="20" symbolic="YES" id="lmE-yd-BZ9"/>
                             <constraint firstItem="Dzm-Tp-9pl" firstAttribute="centerY" secondItem="guj-vO-BCa" secondAttribute="centerY" id="sFS-zV-7y3"/>
                             <constraint firstItem="n21-NP-VVz" firstAttribute="centerY" secondItem="guj-vO-BCa" secondAttribute="centerY" id="vhz-IT-Eqd"/>
+                            <constraint firstItem="bsu-UE-ewa" firstAttribute="top" secondItem="guj-vO-BCa" secondAttribute="bottom" constant="20" id="zum-uZ-BKf"/>
                         </constraints>
                     </view>
                     <connections>
@@ -817,12 +835,13 @@
                         <outlet property="label" destination="S6v-KI-LDg" id="kdw-co-aeA"/>
                         <outlet property="language" destination="n21-NP-VVz" id="oL8-JZ-gBf"/>
                         <outlet property="pathField" destination="guj-vO-BCa" id="M7g-dh-iav"/>
+                        <outlet property="tPathField" destination="bsu-UE-ewa" id="Jkb-ZO-jHJ"/>
                         <outlet property="transBtn" destination="nrV-jg-5rQ" id="8jK-ct-j7N"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="741"/>
+            <point key="canvasLocation" x="208" y="731"/>
         </scene>
     </scenes>
 </document>

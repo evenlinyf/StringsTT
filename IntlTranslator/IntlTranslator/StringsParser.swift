@@ -7,35 +7,9 @@
 
 import Cocoa
 
-class StringsParser: NSObject {
+struct StringsParser {
     
-    private var path: String?
-    
-    convenience init(path: String) {
-        self.init()
-        self.path = path
-    }
-    
-    func parseString() -> [String: String]? {
-        guard let path = path else {
-            return nil
-        }
-        
-        guard FileManager.default.fileExists(atPath: path) else {
-            print("文件不存在")
-            return nil
-        }
-        
-        let filer = File(path: path)
-        let mapStrings = try? filer.read()
-        if let values = mapStrings {
-            let result = self.convertToDic(string: values)
-            return result
-        }
-        return nil
-    }
-    
-    func convertToString(dic: [String: String]?) -> String? {
+    static func convertToString(dic: [String: String]?) -> String? {
         guard let dic = dic else {
             return nil
         }
@@ -62,7 +36,7 @@ class StringsParser: NSObject {
         return fileString
     }
     
-    func convertToDic(string: String) -> [String: String] {
+    static func convertToDic(string: String) -> [String: String] {
         let eachKeyValues = string.components(separatedBy: "\n").filter({$0.contains("=")})
         var map: [String: String] = [:]
         for keyValue in eachKeyValues {
@@ -88,7 +62,7 @@ class StringsParser: NSObject {
         return map
     }
     
-    func outputPath(language: String) -> String {
+    static func outputPath(language: String) -> String {
         let deskTopPath = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask)[0]
         
         let path = deskTopPath.appendingPathComponent("\(language)-Localizable.strings", isDirectory: false)

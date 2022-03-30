@@ -23,7 +23,6 @@ struct Translator {
         }
         let req = URLRequest(url: pathUrl)
         
-        print("👉🏻👉🏻👉🏻 \(path)")
         let session = URLSession(configuration: URLSessionConfiguration.default)
         
         let task = session.dataTask(with: req) { data, resp, error in
@@ -42,7 +41,7 @@ struct Translator {
                 }
                 if let translatedString = respDic["data"] as? String {
                     complete(translatedString)
-                    print("\(content) ---> \(translatedString)")
+                    print("🌏 \(content) ---> \(translatedString)")
                 } else {
                     complete(nil)
                 }

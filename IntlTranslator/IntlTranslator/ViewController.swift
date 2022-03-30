@@ -11,6 +11,8 @@ class ViewController: NSViewController {
 
     @IBOutlet weak var pathField: NSTextField!
     
+    @IBOutlet weak var tPathField: NSTextField!
+    
     @IBOutlet weak var label: NSTextField!
     
     @IBOutlet weak var language: NSComboBox!
@@ -19,14 +21,16 @@ class ViewController: NSViewController {
     
     @IBOutlet weak var transBtn: NSButton!
     
-    var transProgress: Int = 0
     
-    private var data = DataCenter()
+    private var file = StringFile()
+    private var tFile = StringFile()
     
-    ///翻译并发数量
-    var concurrentCount: Int = 100
-    
-    var parser: StringsParser?
+    /// 翻译并发数量（循环请求翻译接口次数）
+    private var concurrentCount: Int = 100
+    /// 第几个一百个
+    private var transProgress: Int = 0
+    /// 当前翻译第几个
+    private var currentIndex: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,26 +49,27 @@ class ViewController: NSViewController {
         
         reset()
         
-        parser = StringsParser(path: pathField.stringValue)
-        
-        if let originalDic = parser?.parseString() {
-            data.originalDic = originalDic
+        file.path = pathField.stringValue
+        if FileManager.default.fileExists(atPath: tPathField.stringValue) {
+            tFile.path = tPathField.stringValue
         } else {
-            self.label.stringValue = "没有任何内容"
+            tFile.path = StringsParser.outputPath(language: language.stringValue)
         }
-        guard data.originalDic.count > 0 else {
+        
+        guard file.dic.count > 0 else {
             return
         }
+        
         DispatchQueue.main.async {
             self.indicator.startAnimation(nil)
-            self.label.stringValue = "检测到 \(self.data.transKeys.count) 条待翻译数据"
+            self.label.stringValue = "检测到 \(self.file.keys.count) 条未翻译数据, \(self.tFile.keys.count) 条已翻译数据"
         }
         translate()
     }
     
     func reset() {
-        self.parser = nil
-        self.data = DataCenter()
+        file = StringFile()
+        tFile = StringFile()
         transProgress = 0
         self.label.stringValue = "等待翻译"
     }
@@ -72,16 +77,17 @@ class ViewController: NSViewController {
     func translate() {
         
         for i in 0..<concurrentCount {
-            let theIndex = transProgress * concurrentCount + i
-            guard theIndex < data.transKeys.count else {
+            currentIndex = transProgress * concurrentCount + i
+            guard currentIndex < file.keys.count else {
                 break
             }
-            let key = data.transKeys[theIndex]
-            guard data.translatedDic[key] == nil else {
+            let key = file.keys[currentIndex]
+            guard tFile.dic[key] == nil else {
                 continue
             }
-            self.translate(key: key, content: data.originalDic[key]!)
+            self.translate(key: key, content: file.dic[key]!)
         }
+        checkCompleted()
         
     }
     
@@ -90,32 +96,40 @@ class ViewController: NSViewController {
             
             if let result = result {
                 //去除引号， 防止错误
-                self.data.translatedDic[key] = result.replacingOccurrences(of: "\"", with: "")
+                self.tFile.dic[key] = result.replacingOccurrences(of: "\"", with: "")
             } else {
-                self.data.translatedDic[key] = "⚠️⚠️⚠️ Translate Failed ⚠️⚠️⚠️"
-                self.data.errorArray.append(key)
+                self.tFile.dic[key] = "⚠️⚠️⚠️ Translate Failed ⚠️⚠️⚠️"
             }
             
             self.checkCompleted()
         }
     }
     
+    func successDescription() -> String {
+        var desc = "翻译成功 🎉🎉🎉\n总共翻译 \(file.keys.count) 条"
+//        if errorArray.count > 0 {
+//            desc += "\n失败 \(errorArray.count) 条"
+//        }
+        desc += "\n文件已保存到\(tFile.path ?? "")"
+        return desc
+    }
+    
     func checkCompleted() {
-        if data.translateCompleted() {
+        if file.dic.count == tFile.dic.count {
             DispatchQueue.main.async {
                 self.indicator.stopAnimation(nil)
             }
             successAction()
         } else {
             DispatchQueue.main.async {
-                self.label.stringValue = self.data.progressDescription()
+                self.label.stringValue = "Translating \(self.tFile.dic.count)/\(self.file.dic.count)"
             }
             self.checkProgress()
         }
     }
     
     func checkProgress() {
-        if data.translatedDic.count%concurrentCount == 0 {
+        if currentIndex%concurrentCount == 0 {
             transProgress += 1
             translate()
         }
@@ -123,26 +137,9 @@ class ViewController: NSViewController {
     
     func successAction() {
         DispatchQueue.main.async {
-            self.label.stringValue = self.data.successDescription()
+            self.label.stringValue = self.successDescription()
         }
-        self.exportTranslatedFile()
-    }
-    
-    func exportTranslatedFile() {
-        guard let outputString = parser?.convertToString(dic: self.data.translatedDic) else {
-            return
-        }
-        
-        if let outPath = parser?.outputPath(language: language.stringValue) {
-            do {
-                try File(path: outPath).write(contents: outputString)
-            } catch let error {
-                print(error.localizedDescription)
-            }
-        } else {
-            print("Error output path")
-        }
-        
+        tFile.save()
     }
     
     override var representedObject: Any? {
