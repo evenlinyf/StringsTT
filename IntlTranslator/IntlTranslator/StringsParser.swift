@@ -32,7 +32,7 @@ struct StringsParser {
         """ + sortedDict.reduce("") {
             $0 + "\n\($1.0) = \"\($1.1)\";"
         }
-        print(fileString)
+//        print(fileString)
         return fileString
     }
     
