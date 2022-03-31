@@ -49,10 +49,12 @@ class ViewController: NSViewController {
     }
 
     @IBAction func parseFilePath(_ sender: Any) {
-//        self.parseFiles()
+        self.parseFiles()
+    }
+    
+    func findSubPaths() {
         do {
             let sub = try FileFinder.paths(for: ".lproj", path: pathField.stringValue)
-            label.stringValue = sub.description
             print(sub)
         } catch let error {
             print(error)
