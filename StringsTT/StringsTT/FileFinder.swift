@@ -24,7 +24,7 @@ struct FileFinder {
         } catch let error {
             throw error
         }
-        subPaths = subPaths.filter({$0.hasSuffix(fileType) && $0.contains("/") == false})
+        subPaths = subPaths.filter{$0.hasSuffix(fileType) && $0.contains("/") == false}
         
         return subPaths.sorted()
     }

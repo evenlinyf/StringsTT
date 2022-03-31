@@ -49,14 +49,14 @@ class ViewController: NSViewController {
     }
 
     @IBAction func parseFilePath(_ sender: Any) {
-        self.parseFiles()
-//        do {
-//            let sub = try FileFinder.paths(for: "lproj", path: pathField.stringValue)
-//            label.stringValue = sub.description
-//            print(sub)
-//        } catch let error {
-//            print(error)
-//        }
+//        self.parseFiles()
+        do {
+            let sub = try FileFinder.paths(for: ".lproj", path: pathField.stringValue)
+            label.stringValue = sub.description
+            print(sub)
+        } catch let error {
+            print(error)
+        }
     }
     
     @IBAction func transBtnDidClick(_ sender: NSButton) {
