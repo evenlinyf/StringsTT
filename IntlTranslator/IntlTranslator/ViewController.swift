@@ -35,6 +35,7 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        label.maximumNumberOfLines = 10
     }
     
     @IBAction func didSelectLanguage(_ sender: NSComboBox) {
@@ -47,6 +48,17 @@ class ViewController: NSViewController {
         NSWorkspace.shared.open(URL(string: ITConstant.languageCodePath)!)
     }
 
+    @IBAction func parseFilePath(_ sender: Any) {
+        self.parseFiles()
+//        do {
+//            let sub = try FileFinder.paths(for: "lproj", path: pathField.stringValue)
+//            label.stringValue = sub.description
+//            print(sub)
+//        } catch let error {
+//            print(error)
+//        }
+    }
+    
     @IBAction func transBtnDidClick(_ sender: NSButton) {
         
         reset()
@@ -61,8 +73,6 @@ class ViewController: NSViewController {
         file.path = pathField.stringValue
         if FileManager.default.fileExists(atPath: tPathField.stringValue) {
             tFile.path = tPathField.stringValue
-        } else {
-            tFile.path = StringsParser.outputPath(language: language.stringValue)
         }
         
         guard file.dic.count > 0 else {
@@ -115,10 +125,7 @@ class ViewController: NSViewController {
     }
     
     func successDescription() -> String {
-        var desc = "翻译成功 🎉🎉🎉\n总共翻译 \(ttKeys.count) 条"
-//        if errorArray.count > 0 {
-//            desc += "\n失败 \(errorArray.count) 条"
-//        }
+        var desc = "翻译完成 🎉🎉🎉\n总共翻译 \(ttKeys.count) 条"
         desc += "\n文件已保存到\n\(tFile.path ?? "")"
         return desc
     }

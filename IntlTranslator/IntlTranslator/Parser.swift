@@ -1,5 +1,5 @@
 //
-//  StringsParser.swift
+//  Parser.swift
 //  IntlTranslator
 //
 //  Created by EvenLin on 2022/3/28.
@@ -7,7 +7,7 @@
 
 import Cocoa
 
-struct StringsParser {
+struct Parser {
     
     static func convertToString(dic: [String: String]?) -> String? {
         guard let dic = dic else {
@@ -15,10 +15,7 @@ struct StringsParser {
         }
         let sortedDict = dic.map { ($0.key, $0.value) }.sorted(by: <)
         
-        let today = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd"
-        let dateString = formatter.string(from: today)
+        let dateString = Date().timeString("yyyy/MM/dd")
         
         let fileString = """
         /*
@@ -62,10 +59,10 @@ struct StringsParser {
         return map
     }
     
-    static func outputPath(language: String) -> String {
+    static func outputPath(prefix: String) -> String {
         let deskTopPath = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask)[0]
         
-        let path = deskTopPath.appendingPathComponent("\(language)-Localizable.strings", isDirectory: false)
+        let path = deskTopPath.appendingPathComponent("\(prefix)-Localizable.strings", isDirectory: false)
         
         if FileManager.default.fileExists(atPath: path.path) == false {
             FileManager.default.createFile(atPath: path.path, contents: nil)

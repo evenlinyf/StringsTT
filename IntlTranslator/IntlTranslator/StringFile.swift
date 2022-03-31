@@ -31,7 +31,7 @@ struct StringFile {
         let file = File(path: path)
         do {
             let mapString = try file.read()
-            dic = StringsParser.convertToDic(string: mapString)
+            dic = Parser.convertToDic(string: mapString)
             keys = (dic as NSDictionary).allKeys as! [String]
         } catch let error {
             print(error.localizedDescription)
@@ -39,16 +39,17 @@ struct StringFile {
     }
     
     func save() {
-        guard let outputString = StringsParser.convertToString(dic: dic) else {
+        guard let outputString = Parser.convertToString(dic: dic) else {
             return
         }
         
-        guard let path = path else {
-            return
+        var outputPath = self.path
+        if outputPath == nil {
+            outputPath = Parser.outputPath(prefix: Date().timeString("yyyyMMddHHmm"))
         }
         
         do {
-            try File(path: path).write(contents: outputString)
+            try File(path: outputPath!).write(contents: outputString)
         } catch let error {
             print(error.localizedDescription)
         }
