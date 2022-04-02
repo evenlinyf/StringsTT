@@ -25,7 +25,7 @@ struct StringFile {
         }
         
         guard FileManager.default.fileExists(atPath: path) else {
-            print("文件不存在")
+            print("文件不存在\(path)")
             return
         }
         let file = File(path: path)

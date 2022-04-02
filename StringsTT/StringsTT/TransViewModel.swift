@@ -15,6 +15,7 @@ class TransViewModel: NSObject {
     
     var file = StringFile()
     var tFile = StringFile()
+    
     var ttKeys: [String] = []
     
     var language: String = "en"
@@ -30,10 +31,11 @@ class TransViewModel: NSObject {
     private var completeAction: Complete?
     
     func parseFiles(filePath: String, tFilePath: String) {
+        
+        file = StringFile()
         file.path = filePath
-        if FileManager.default.fileExists(atPath: tFilePath) {
-            tFile.path = tFilePath
-        }
+        tFile = StringFile()
+        tFile.path = tFilePath
         
         guard file.dic.count > 0 else {
             return
@@ -90,6 +92,7 @@ class TransViewModel: NSObject {
     private func checkCompleted() {
         let translatedCount = tFile.dic.count - tFile.keys.count
         if ttKeys.count == translatedCount {
+            tFile.save()
             completeAction?()
         } else {
             self.progressAction?(translatedCount, ttKeys.count)
@@ -109,6 +112,9 @@ class TransViewModel: NSObject {
     }
     
     func successDescription() -> String {
+        guard ttKeys.count > 0 else {
+            return "无需翻译"
+        }
         var desc = "翻译完成 🎉🎉🎉\n总共翻译 \(ttKeys.count) 条"
         desc += "\n文件已保存到\n\(tFile.path ?? "")"
         return desc
