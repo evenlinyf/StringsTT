@@ -32,6 +32,7 @@ class ViewController: NSViewController {
         print(sender.stringValue)
         self.label.stringValue = "等待翻译"
         parseFiles()
+        vm.language = sender.stringValue
     }
     
     @IBAction func helpAction(_ sender: NSButton) {
@@ -44,6 +45,7 @@ class ViewController: NSViewController {
     
     @IBAction func transBtnDidClick(_ sender: NSButton) {
         reset()
+        self.vm.language = self.language.stringValue
         parseFiles()
         self.indicator.startAnimation(nil)
         self.vm.startTranslate { [weak self] progress, all in

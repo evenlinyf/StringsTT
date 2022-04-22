@@ -18,7 +18,7 @@ class TransViewModel: NSObject {
     
     var ttKeys: [String] = []
     
-    var language: String = "en"
+    var language: String = "cht"
     
     /// 翻译并发数量（循环请求翻译接口次数）
     var concurrentCount: Int = 100
@@ -45,7 +45,7 @@ class TransViewModel: NSObject {
     }
     
     func fileStatusDesc() -> String {
-        return "检测到 \(self.file.keys.count) 条数据, 已翻译 \(self.tFile.keys.count), 待翻译 \(self.ttKeys.count)"
+        return "检测到 \(self.file.keys.count) 条数据, 已翻译 \(self.tFile.keys.count), 待翻译 \(self.ttKeys.count), to\(language)"
     }
     
     func startTranslate(progress: Progress?, complete: Complete?) {
@@ -77,7 +77,7 @@ class TransViewModel: NSObject {
     }
     
     private func translate(key: String, content: String) {
-        Translator.translate(content: content, language: language) { [unowned self] result in
+        Translator.translate(content: content, language: self.language) { [unowned self] result in
             if let result = result {
                 //去除引号， 防止错误
                 self.tFile.dic[key] = result.replacingOccurrences(of: "\"", with: "")
