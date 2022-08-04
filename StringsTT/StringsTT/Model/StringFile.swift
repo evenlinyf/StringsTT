@@ -43,13 +43,13 @@ struct StringFile {
             return
         }
         
-        var outputPath = self.path
-        if outputPath == nil {
+        var outputPath = self.path ?? ""
+        if outputPath.isEmpty {
             outputPath = Parser.outputPath(prefix: Date().timeString("yyyyMMddHHmm"))
         }
         
         do {
-            try File(path: outputPath!).write(contents: outputString)
+            try File(path: outputPath).write(contents: outputString)
         } catch let error {
             print(error.localizedDescription)
         }

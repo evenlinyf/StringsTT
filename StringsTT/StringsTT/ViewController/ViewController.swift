@@ -40,6 +40,8 @@ class ViewController: NSViewController {
     }
 
     @IBAction func parseFilePath(_ sender: Any) {
+//        let localFinder = LocalFinder()
+//        localFinder.findSubPaths(path: pathField.stringValue)
         parseFiles()
     }
     
@@ -49,22 +51,18 @@ class ViewController: NSViewController {
         parseFiles()
         self.indicator.startAnimation(nil)
         self.vm.startTranslate { [weak self] progress, all in
-            DispatchQueue.main.async {
-                self?.label.stringValue = "Translating \(progress)/\(all)"
-            }
+            self?.showTip("Translating \(progress)/\(all)")
         } complete: { [weak self] in
             DispatchQueue.main.async {
                 self?.indicator.stopAnimation(nil)
-                self?.label.stringValue = self?.vm.successDescription() ?? ""
             }
+            self?.showTip(self?.vm.successDescription())
         }
     }
     
     func parseFiles() {
         vm.parseFiles(filePath: pathField.stringValue, tFilePath: tPathField.stringValue)
-        DispatchQueue.main.async {
-            self.label.stringValue = self.vm.fileStatusDesc()
-        }
+        showTip(self.vm.fileStatusDesc())
     }
     
     func reset() {
@@ -72,14 +70,13 @@ class ViewController: NSViewController {
         self.label.stringValue = "等待翻译"
     }
     
-    func findSubPaths(path: String) {
-        do {
-            let sub = try FileFinder.paths(for: ".lproj", path: path)
-            print(sub)
-        } catch let error {
-            print(error)
+    func showTip(_ tip: String?) {
+        DispatchQueue.main.async {
+            self.label.stringValue = tip ?? ""
         }
     }
+    
+    
     
     override var representedObject: Any? {
         didSet {
