@@ -826,6 +826,16 @@
                                     <action selector="parseFilePath:" target="XfG-lQ-9wD" id="MDp-Ib-nkR"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0xD-Jp-8BU">
+                                <rect key="frame" x="41" y="23" width="120" height="32"/>
+                                <buttonCell key="cell" type="push" title="查找导出.local" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZaQ-UK-Pzj">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="findAndExport:" target="XfG-lQ-9wD" id="6It-qs-07h"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="bsu-UE-ewa" firstAttribute="width" secondItem="guj-vO-BCa" secondAttribute="width" id="0eJ-A1-C1Q"/>
@@ -836,6 +846,8 @@
                             <constraint firstItem="bsu-UE-ewa" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="6wI-d4-wnG"/>
                             <constraint firstItem="nrV-jg-5rQ" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="9B2-BL-ntl"/>
                             <constraint firstItem="smE-IZ-veC" firstAttribute="centerY" secondItem="nrV-jg-5rQ" secondAttribute="centerY" id="Ak0-7v-auy"/>
+                            <constraint firstItem="0xD-Jp-8BU" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="48" id="BKn-Gl-RO7"/>
+                            <constraint firstItem="0xD-Jp-8BU" firstAttribute="centerY" secondItem="nrV-jg-5rQ" secondAttribute="centerY" id="BiA-r2-nkI"/>
                             <constraint firstItem="S6v-KI-LDg" firstAttribute="centerY" secondItem="m2S-Jp-Qdl" secondAttribute="centerY" id="C7k-hw-bPM"/>
                             <constraint firstItem="Glr-Qi-l01" firstAttribute="centerY" secondItem="bsu-UE-ewa" secondAttribute="centerY" id="Gzm-za-SBH"/>
                             <constraint firstItem="smE-IZ-veC" firstAttribute="leading" secondItem="nrV-jg-5rQ" secondAttribute="trailing" constant="8" symbolic="YES" id="JcW-cY-Awo"/>
@@ -862,7 +874,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-330" y="853"/>
+            <point key="canvasLocation" x="-463" y="821"/>
         </scene>
     </scenes>
 </document>

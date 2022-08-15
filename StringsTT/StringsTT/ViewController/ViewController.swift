@@ -40,9 +40,27 @@ class ViewController: NSViewController {
     }
 
     @IBAction func parseFilePath(_ sender: Any) {
-//        let localFinder = LocalFinder()
-//        localFinder.findSubPaths(path: pathField.stringValue)
         parseFiles()
+    }
+    
+    @IBAction func findAndExport(_ sender: NSButton) {
+        findLocalAndExport()
+    }
+    
+    func findLocalAndExport() {
+        let localFinder = LocalFinder()
+        //以"开头, 以".local结尾, 中间不包含 .local 和 "
+        let res = localFinder.findAllMatches(regex: "\"[^.local][^\"]+\".local", in: pathField.stringValue, for: [".swift", ".m"])
+        
+        if res.count > 0 {
+            var file = StringFile()
+            res.forEach { key in
+                let tKey = key.replacingOccurrences(of: ".local", with: "")
+                let value = tKey.replacingOccurrences(of: "\"", with: "")
+                file.dic[tKey] = value
+            }
+            file.save()
+        }
     }
     
     @IBAction func transBtnDidClick(_ sender: NSButton) {
