@@ -81,7 +81,7 @@ class LocalFinder: NSObject {
     func exportFile() {
         var file = StringFile()
         localKeys.forEach { key in
-            let value = key.replacingOccurrences(of: ".local", with: "").replacingOccurrences(of: "\"", with: "")
+            let value = key.replacingOccurrences(of: ".localized", with: "").replacingOccurrences(of: "\"", with: "")
             file.dic[value] = value
         }
         file.save()

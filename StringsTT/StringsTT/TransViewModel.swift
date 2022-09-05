@@ -38,6 +38,7 @@ class TransViewModel: NSObject {
         tFile.path = tFilePath
         
         guard file.dic.count > 0 else {
+            print("待翻译的Strings文件没有任何内容， 请检查")
             return
         }
         

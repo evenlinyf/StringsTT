@@ -28,34 +28,41 @@ class ViewController: NSViewController {
         label.maximumNumberOfLines = 10
     }
     
+    /// 选择了翻译目标语言
     @IBAction func didSelectLanguage(_ sender: NSComboBox) {
         print(sender.stringValue)
-        self.label.stringValue = "等待翻译"
-        parseFiles()
+        showTip("等待翻译")
         vm.language = sender.stringValue
+        parseFiles()
     }
     
+    /// 点击了？按钮
     @IBAction func helpAction(_ sender: NSButton) {
         NSWorkspace.shared.open(URL(string: ITConstant.languageCodePath)!)
     }
 
+    /// 点击检查
     @IBAction func parseFilePath(_ sender: Any) {
+        reset()
         parseFiles()
     }
     
+    /// 点击了查找并导出按钮
     @IBAction func findAndExport(_ sender: NSButton) {
         findLocalAndExport()
     }
     
+    /// 查找某个文件夹下 "国际化".localized 文件并导出
     func findLocalAndExport() {
         let localFinder = LocalFinder()
         //以"开头, 以".local结尾, 中间不包含 .local 和 "
-        let res = localFinder.findAllMatches(regex: "\"[^.localized][^\"]+\".localized", in: pathField.stringValue, for: [".swift", ".m"])
+        let localStr = ".localized"
+        let res = localFinder.findAllMatches(regex: "\"[^\(localStr)][^\"]+\"\(localStr)", in: pathField.stringValue, for: [".swift", ".m"])
         
         if res.count > 0 {
             var file = StringFile()
             res.forEach { key in
-                let tKey = key.replacingOccurrences(of: ".localized", with: "")
+                let tKey = key.replacingOccurrences(of: localStr, with: "")
                 let value = tKey.replacingOccurrences(of: "\"", with: "")
                 file.dic[tKey] = value
             }
@@ -63,9 +70,9 @@ class ViewController: NSViewController {
         }
     }
     
+    /// 点击一键翻译按钮
     @IBAction func transBtnDidClick(_ sender: NSButton) {
         reset()
-        self.vm.language = self.language.stringValue
         parseFiles()
         self.indicator.startAnimation(nil)
         self.vm.startTranslate { [weak self] progress, all in
@@ -78,14 +85,18 @@ class ViewController: NSViewController {
         }
     }
     
+    /// 根据路径解析文件
     func parseFiles() {
         vm.parseFiles(filePath: pathField.stringValue, tFilePath: tPathField.stringValue)
         showTip(self.vm.fileStatusDesc())
     }
     
+    
+    /// 重置ViewModel
     func reset() {
         vm = TransViewModel()
-        self.label.stringValue = "等待翻译"
+        vm.language = self.language.stringValue
+        showTip("等待翻译")
     }
     
     func showTip(_ tip: String?) {
