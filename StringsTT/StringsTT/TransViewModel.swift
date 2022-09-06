@@ -56,7 +56,34 @@ class TransViewModel: NSObject {
             complete?()
             return
         }
-        self.translate()
+//        self.translate()
+        self.translation()
+    }
+    
+    private func translation() {
+        let sema = DispatchSemaphore(value: 5)
+        for i in 0..<ttKeys.count {
+            sema.wait()
+            DispatchQueue.global().async {
+                let key = self.ttKeys[i]
+                let content = self.file.dic[key]!
+                print("进行到[\(i)]， 正在翻译\(content)")
+                Translator.translate(content: content, language: self.language) { result in
+                    if let result = result {
+                        //去除引号， 防止错误
+                        self.tFile.dic[key] = result.replacingOccurrences(of: "\"", with: "")
+                    } else {
+                        self.tFile.dic[key] = "⚠️⚠️⚠️ Translate Failed ⚠️⚠️⚠️"
+                    }
+                    let translatedCount = self.tFile.dic.count - self.tFile.keys.count
+//                    self.progressAction?(translatedCount, self.ttKeys.count)
+                    let sigRes = sema.signal()
+                    print("进度\(translatedCount)/\(self.ttKeys.count), 翻译了[\(content)], 当前信号量 = \(sigRes)")
+                }
+            }
+        }
+        tFile.save()
+        self.completeAction?()
     }
     
     private func translate() {

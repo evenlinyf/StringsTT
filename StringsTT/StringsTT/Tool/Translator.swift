@@ -10,6 +10,7 @@ import Cocoa
 struct Translator {
     
     typealias TComplete = (String?) -> Void
+    static let config = URLSessionConfiguration.default
     
     static func translate(content: String, language: String, complete: @escaping TComplete) {
         let path = ITConstant.apiPath(content: content, to: language).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
@@ -23,7 +24,7 @@ struct Translator {
         }
         let req = URLRequest(url: pathUrl)
         
-        let session = URLSession(configuration: URLSessionConfiguration.default)
+        let session = URLSession(configuration: config)
         
         let task = session.dataTask(with: req) { data, resp, error in
             guard let data = data else {
@@ -41,7 +42,7 @@ struct Translator {
                 }
                 if let translatedString = respDic["data"] as? String {
                     complete(translatedString)
-                    print("🌏 \(content) ---> \(translatedString)")
+//                    print("🌏 \(content) ---> \(translatedString)")
                 } else {
                     complete(nil)
                 }
@@ -53,3 +54,4 @@ struct Translator {
         task.resume()
     }
 }
+
