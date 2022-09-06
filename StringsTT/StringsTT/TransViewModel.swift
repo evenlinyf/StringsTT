@@ -20,13 +20,6 @@ class TransViewModel: NSObject {
     
     var language: String = "cht"
     
-    /// 翻译并发数量（循环请求翻译接口次数）
-    var concurrentCount: Int = 100
-    /// 第几个一百个
-    var transProgress: Int = 0
-    /// 当前翻译第几个
-    var currentIndex: Int = 0
-    
     private var progressAction: Progress?
     private var completeAction: Complete?
     
@@ -56,19 +49,24 @@ class TransViewModel: NSObject {
             complete?()
             return
         }
-//        self.translate()
-        self.translation()
+        self.translateAction()
     }
     
-    private func translation() {
-        let sema = DispatchSemaphore(value: 5)
+    private func translateAction() {
+        let sema = DispatchSemaphore(value: 20)
+        let group = DispatchGroup()
         for i in 0..<ttKeys.count {
-            sema.wait()
             DispatchQueue.global().async {
+                sema.wait()
+                group.enter()
                 let key = self.ttKeys[i]
                 let content = self.file.dic[key]!
                 print("进行到[\(i)]， 正在翻译\(content)")
                 Translator.translate(content: content, language: self.language) { result in
+                    defer {
+                        sema.signal()
+                        group.leave()
+                    }
                     if let result = result {
                         //去除引号， 防止错误
                         self.tFile.dic[key] = result.replacingOccurrences(of: "\"", with: "")
@@ -76,62 +74,13 @@ class TransViewModel: NSObject {
                         self.tFile.dic[key] = "⚠️⚠️⚠️ Translate Failed ⚠️⚠️⚠️"
                     }
                     let translatedCount = self.tFile.dic.count - self.tFile.keys.count
-//                    self.progressAction?(translatedCount, self.ttKeys.count)
-                    let sigRes = sema.signal()
-                    print("进度\(translatedCount)/\(self.ttKeys.count), 翻译了[\(content)], 当前信号量 = \(sigRes)")
+                    self.progressAction?(translatedCount, self.ttKeys.count)
                 }
             }
         }
-        tFile.save()
-        self.completeAction?()
-    }
-    
-    private func translate() {
-        for i in 0..<concurrentCount {
-            currentIndex = transProgress * concurrentCount + i
-            print(currentIndex)
-            guard currentIndex < ttKeys.count else {
-                currentIndex -= 1
-                break
-            }
-            let key = ttKeys[currentIndex]
-            guard tFile.dic[key] == nil else {
-                continue
-            }
-            self.translate(key: key, content: file.dic[key]!)
-        }
-        print("🌛 translate 检查是否结束")
-        checkCompleted()
-    }
-    
-    private func translate(key: String, content: String) {
-        Translator.translate(content: content, language: self.language) { [unowned self] result in
-            if let result = result {
-                //去除引号， 防止错误
-                self.tFile.dic[key] = result.replacingOccurrences(of: "\"", with: "")
-            } else {
-                self.tFile.dic[key] = "⚠️⚠️⚠️ Translate Failed ⚠️⚠️⚠️"
-            }
-            print("☀️ translate 检查是否结束")
-            self.checkCompleted()
-        }
-    }
-    
-    private func checkCompleted() {
-        let translatedCount = tFile.dic.count - tFile.keys.count
-        if ttKeys.count == translatedCount {
-            tFile.save()
-            completeAction?()
-        } else {
-            self.progressAction?(translatedCount, ttKeys.count)
-            self.checkProgress()
-        }
-    }
-    
-    private func checkProgress() {
-        if (currentIndex + 1)%concurrentCount == 0 {
-            transProgress += 1
-            translate()
+        group.notify(queue: .main) {
+            self.tFile.save()
+            self.completeAction?()
         }
     }
     
@@ -144,7 +93,7 @@ class TransViewModel: NSObject {
             return "无需翻译"
         }
         var desc = "翻译完成 🎉🎉🎉\n总共翻译 \(ttKeys.count) 条"
-        desc += "\n文件已保存到\n\(tFile.path ?? "")"
+        desc += "\n文件已保存到\n\(tFile.path ?? "桌面")"
         return desc
     }
 }

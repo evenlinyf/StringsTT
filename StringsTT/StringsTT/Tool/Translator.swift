@@ -42,7 +42,7 @@ struct Translator {
                 }
                 if let translatedString = respDic["data"] as? String {
                     complete(translatedString)
-//                    print("🌏 \(content) ---> \(translatedString)")
+                    print("🌏 \(content) ---> \(translatedString)")
                 } else {
                     complete(nil)
                 }
