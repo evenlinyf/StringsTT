@@ -13,7 +13,7 @@ struct ITConstant {
         return String(format: apiPath, to, content)
     }
     
-    static private let apiPath = "https://gochat.meyouchat.com/program/contact/transform/text?tar=%@&textMsg=%@"
+    static private let apiPath = ""
     
     static let languageCodePath = "https://api.fanyi.baidu.com/product/113"
 }
