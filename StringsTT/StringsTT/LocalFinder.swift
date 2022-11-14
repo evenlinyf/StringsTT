@@ -65,12 +65,10 @@ class LocalFinder: NSObject {
     private func parseLines() {
         lines.forEach { line in
             let regex = try? NSRegularExpression(pattern: self.regex)
-            if let res = regex?.matches(in: line, range: NSRange(location: 0, length: line.count)) {
-                if res.count > 0 {
-                    res.forEach { textCheckingResult in
-                        let key = (line as NSString).substring(with: textCheckingResult.range)
-                        self.localKeys.insert(key)
-                    }
+            if let res = regex?.matches(in: line, range: NSRange(location: 0, length: line.count)), res.count > 0 {
+                res.forEach { textCheckingResult in
+                    let key = (line as NSString).substring(with: textCheckingResult.range)
+                    self.localKeys.insert(key)
                 }
             }
         }

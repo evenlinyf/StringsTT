@@ -49,7 +49,13 @@ class ViewController: NSViewController {
     
     /// 点击了查找并导出按钮
     @IBAction func findAndExport(_ sender: NSButton) {
-        findLocalAndExport()
+//        findLocalAndExport()
+        kakashiAction()
+    }
+    
+    func kakashiAction() {
+        let kakashi = Kakashi(path: pathField.stringValue, targetPath: tPathField.stringValue)
+        kakashi.ninjutsuCopyPaste()
     }
     
     /// 查找某个文件夹下 "国际化".localized 文件并导出
