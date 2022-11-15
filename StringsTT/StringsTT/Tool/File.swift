@@ -24,4 +24,12 @@ struct File: Hashable {
     func write(contents: String) throws {
         try contents.write(toFile: path, atomically: false, encoding: .utf8)
     }
+    
+    /// modifiable contents
+    var contents: String = ""
+    
+    /// write the modifiable contents to the file.
+    func write() throws {
+        try contents.write(toFile: path, atomically: false, encoding: .utf8)
+    }
 }

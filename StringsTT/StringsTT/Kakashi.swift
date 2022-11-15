@@ -13,6 +13,14 @@ class Kakashi: NSObject {
     private var path: String = ""
     private var tPath: String = ""
     
+    /// 文件暂存
+    private var files: [File] = []
+    
+    private var outputFiles: [File] = []
+    
+    /// 需要修改的类名
+    private var tmNames: [String: String] = [:]
+    
     private var subPaths: [String] = []
     
     convenience init(path: String, targetPath: String) {
@@ -25,41 +33,61 @@ class Kakashi: NSObject {
     func ninjutsuCopyPaste() {
         findSubPaths()
         upgradeNojiezi()
-        print("处理完成🎉🎉🎉")
+        print("🐝🐝🐝 处理完成, 正在导出到\(self.tPath)")
+        outputFiles.forEach { try? $0.write() }
+        print("🐝🐝🐝 导出成功 🎉🎉🎉")
     }
     
     /// 修改
     private func upgradeNojiezi() {
         subPaths.forEach { file in
-            self.processEachFile(file: file)
+            self.copyEachFile(file: file)
+        }
+        print("🐝🐝🐝 准备了\(files.count)个待处理的文件, 需要替换的类名有\n\(tmNames)\n<<<<<<<<<<")
+        
+        for file in files {
+            print("🐝 正在处理 \(file.name)")
+            var otFile = File(path: file.path)
+            var otLines: [String] = []
+            file.contents.components(separatedBy: "\n").forEach { line in
+                //修改工程名、等
+                var mLine = modifyFileInfo(line: line)
+                for (key, value) in self.tmNames {
+                    if mLine.contains(key) {
+                        print("正在将\(key)替换成\(value)")
+                        mLine = mLine.replacingOccurrences(of: key, with: value)
+                    }
+                }
+                otLines.append(mLine)
+            }
+            let otFileString = otLines.joined(separator: "\n")
+            otFile.contents = otFileString
+            self.outputFiles.append(otFile)
         }
     }
     
-    private func processEachFile(file: String) {
+    private func copyEachFile(file: String) {
         let filePath = self.path + "/" + file
         guard FileManager.default.fileExists(atPath: filePath) else {
             print("🈲 文件不存在")
             return
         }
         let file = File(path: filePath)
-        print("正在处理\(filePath)")
         
-        var otLines: [String] = []
-        
-        //文件解析成字符串
-        guard let fileString = try? file.read() else { return }
-        
-        let lines = fileString.components(separatedBy: "\n")
-        lines.forEach { line in
-            let mLine = modifyFileInfo(line: line)
-            otLines.append(mLine)
+        // 将需要修改的文件类名放入字典中
+        if file.name.hasPrefix("WL") {
+            //添加需要修改的类名
+            let key = file.name.replacingOccurrences(of: ".swift", with: "")
+            let value = key.replacingOccurrences(of: "WL", with: "NOV")
+            tmNames[key] = value
         }
         
-        let otFileString = otLines.joined(separator: "\n")
         //改个前缀
-        let otFileName = filePath.components(separatedBy: "/").last?.replacingOccurrences(of: "WL", with: "NOV") ?? "FileNameError.swift"
+        let otFileName = file.name.replacingOccurrences(of: "WL", with: "NOV")
         let otPath = self.tPath + "/" + otFileName
-        try? File(path: otPath).write(contents: otFileString)
+        var otFile = File(path: otPath)
+        otFile.contents = (try? file.read()) ?? ""
+        self.files.append(otFile)
         
     }
     
