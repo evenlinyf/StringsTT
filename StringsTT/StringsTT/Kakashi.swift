@@ -23,6 +23,9 @@ class Kakashi: NSObject {
     
     private var subPaths: [String] = []
     
+    var startTime: Date?
+    var endTime: Date?
+    
     convenience init(path: String, targetPath: String) {
         self.init()
         self.path = path
@@ -31,11 +34,22 @@ class Kakashi: NSObject {
     
     /// 忍术： 一键拷贝
     func ninjutsuCopyPaste() {
+        print("🐝🐝🐝 开始处理\ntime = \(Date().timeString())")
         findSubPaths()
         upgradeNojiezi()
         print("🐝🐝🐝 处理完成, 正在导出到\(self.tPath)")
-        outputFiles.forEach { try? $0.write() }
-        print("🐝🐝🐝 导出成功 🎉🎉🎉")
+        outputFiles.forEach { file in
+            do {
+                let dir = (file.path as NSString).deletingLastPathComponent
+                if FileManager.default.fileExists(atPath: dir) == false {
+                    try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+                }
+                try file.write()
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+        print("🐝🐝🐝 导出成功 🎉🎉🎉\ntime = \(Date().timeString())")
     }
     
     /// 修改
@@ -51,16 +65,22 @@ class Kakashi: NSObject {
             var otLines: [String] = []
             file.contents.components(separatedBy: "\n").forEach { line in
                 //修改工程名、等
-                var mLine = modifyFileInfo(line: line)
-                for (key, value) in self.tmNames {
-                    if mLine.contains(key) {
-                        print("正在将\(key)替换成\(value)")
-                        mLine = mLine.replacingOccurrences(of: key, with: value)
-                    }
-                }
+                let mLine = modifyFileInfo(line: line)
+//                for (key, value) in self.tmNames {
+//                    if mLine.contains(key) {
+//                        print("正在将\(key)替换成\(value)")
+//                        mLine = mLine.replacingOccurrences(of: key, with: value)
+//                    }
+//                }
                 otLines.append(mLine)
             }
-            let otFileString = otLines.joined(separator: "\n")
+            var otFileString = otLines.joined(separator: "\n")
+            for (key, value) in tmNames {
+                if otFileString.contains(key) {
+                    print("正在将\(key)替换成\(value)")
+                    otFileString = otFileString.replacingOccurrences(of: key, with: value)
+                }
+            }
             otFile.contents = otFileString
             self.outputFiles.append(otFile)
         }
@@ -72,21 +92,40 @@ class Kakashi: NSObject {
             print("🈲 文件不存在")
             return
         }
-        let file = File(path: filePath)
+        let readFile = File(path: filePath)
         
         // 将需要修改的文件类名放入字典中
-        if file.name.hasPrefix("WL") {
-            //添加需要修改的类名
-            let key = file.name.replacingOccurrences(of: ".swift", with: "")
-            let value = key.replacingOccurrences(of: "WL", with: "NOV")
-            tmNames[key] = value
-        }
-        
+        let key = readFile.name.replacingOccurrences(of: ".swift", with: "")
         //改个前缀
-        let otFileName = file.name.replacingOccurrences(of: "WL", with: "NOV")
-        let otPath = self.tPath + "/" + otFileName
+        var value = key.replacingOccurrences(of: "WL", with: "NOV")
+        
+        let dic = [
+            "User": "Person",
+            "TR": "TaskReward",
+            "Video": "Movie",
+            "Shop": "BuySth",
+            "Pinglun": "Discuss",
+            "Manager": "Tool",
+            "Bottle": "Flask",
+            "Call": "RingUp",
+            "Dynamic": "Trends",
+            "Gift": "GemPack",
+            "Hongbao": "RedPaper",
+            "IAP": "Recharge",
+            "ImagePicker": "PhotoPicker"
+        ]
+        //文字修改
+        for (key, rvalue) in dic {
+            if value.contains(key) {
+                value = value.replacingOccurrences(of: key, with: rvalue)
+            }
+        }
+        tmNames[key] = value
+        
+        
+        let otPath = self.tPath + "/" + (file as NSString).deletingLastPathComponent + "/" + value + ".swift"
         var otFile = File(path: otPath)
-        otFile.contents = (try? file.read()) ?? ""
+        otFile.contents = (try? readFile.read()) ?? ""
         self.files.append(otFile)
         
     }
@@ -112,7 +151,8 @@ class Kakashi: NSObject {
             mLine = mLine.replacingOccurrences(of: oldCopyRight, with: newCopyRight)
         }
         if mLine.hasPrefix("//  Created by") {
-            let date = Date().timeString("yyyy/MM/dd")
+            let randomDate = Date().addingTimeInterval(TimeInterval(86400 * Int.random(in: 0...7)))
+            let date = randomDate.timeString("yyyy/MM/dd")
             mLine = "//  Created by \(newCreatorName) on \(date)."
         }
         return mLine
