@@ -66,12 +66,6 @@ class Kakashi: NSObject {
             file.contents.components(separatedBy: "\n").forEach { line in
                 //修改工程名、等
                 let mLine = modifyFileInfo(line: line)
-//                for (key, value) in self.tmNames {
-//                    if mLine.contains(key) {
-//                        print("正在将\(key)替换成\(value)")
-//                        mLine = mLine.replacingOccurrences(of: key, with: value)
-//                    }
-//                }
                 otLines.append(mLine)
             }
             var otFileString = otLines.joined(separator: "\n")
@@ -95,35 +89,52 @@ class Kakashi: NSObject {
         let readFile = File(path: filePath)
         
         // 将需要修改的文件类名放入字典中
-        let key = readFile.name.replacingOccurrences(of: ".swift", with: "")
-        //改个前缀
-        var value = key.replacingOccurrences(of: "WL", with: "NOV")
+        let fullFileName = readFile.name.replacingOccurrences(of: ".swift", with: "")
+        //去除旧前缀
+        var fileModifiedName = fullFileName.replacingOccurrences(of: "WL", with: "")
         
         let dic = [
             "User": "Person",
             "TR": "TaskReward",
             "Video": "Movie",
-            "Shop": "BuySth",
+            "Shopping": "Plaza",
+            "Shop": "Plaza",
             "Pinglun": "Discuss",
-            "Manager": "Tool",
+            "Manager": "Helper",
             "Bottle": "Flask",
             "Call": "RingUp",
             "Dynamic": "Trends",
-            "Gift": "GemPack",
+            "Gift": "Present",
             "Hongbao": "RedPaper",
             "IAP": "Recharge",
-            "ImagePicker": "PhotoPicker"
+            "VM": "ViewModel",
+            "ImagePicker": "PhotoPicker",
+            "Publish": "Post",
+            "Chat": "Session",
+            "API": "Interface",
+            "TipOff": "Report",
+            "RegLogin": "Register"
         ]
+        
+        var middlePath = (file as NSString).deletingLastPathComponent
         //文字修改
         for (key, rvalue) in dic {
-            if value.contains(key) {
-                value = value.replacingOccurrences(of: key, with: rvalue)
+            //如果文件名包含以上key， 替换成对应value
+            if fileModifiedName.contains(key) {
+                fileModifiedName = fileModifiedName.replacingOccurrences(of: key, with: rvalue)
+            }
+            //如果中间路径也包含以上key，也替换成value
+            if middlePath.contains(key) {
+                middlePath = middlePath.replacingOccurrences(of: key, with: rvalue)
             }
         }
-        tmNames[key] = value
+        //添加新前缀
+        fileModifiedName = "NOV" + fileModifiedName
+        
+        tmNames[fullFileName] = fileModifiedName
         
         
-        let otPath = self.tPath + "/" + (file as NSString).deletingLastPathComponent + "/" + value + ".swift"
+        let otPath = "\(tPath)/\(middlePath)/\(fileModifiedName).swift"
         var otFile = File(path: otPath)
         otFile.contents = (try? readFile.read()) ?? ""
         self.files.append(otFile)
