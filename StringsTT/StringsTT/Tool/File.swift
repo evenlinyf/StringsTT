@@ -14,6 +14,11 @@ struct File: Hashable {
     var name: String {
         (path as NSString).pathComponents.last ?? ""
     }
+    
+    /// The type of the file
+    var type: String {
+        name.components(separatedBy: ".").last ?? ""
+    }
 
     /// Returns the disk contents of the file.
     func read() throws -> String {
