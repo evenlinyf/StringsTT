@@ -49,10 +49,11 @@ class ViewController: NSViewController {
     
     /// 点击了查找并导出按钮
     @IBAction func findAndExport(_ sender: NSButton) {
-//        findLocalAndExport()
-        kakashiAction()
+        findLocalAndExport()
+//        kakashiAction()
     }
     
+    //TODO: 给一键复制工程做个单独的UI， 或者单独app
     func kakashiAction() {
         let kakashi = Kakashi(path: pathField.stringValue, targetPath: tPathField.stringValue)
         kakashi.ninjutsuCopyPaste()
