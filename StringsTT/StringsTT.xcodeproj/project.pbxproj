@@ -23,6 +23,7 @@
 		96B3259927F69670000AC8A1 /* STError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B3259827F69670000AC8A1 /* STError.swift */; };
 		D32656A0291F9B4F0020B1DD /* Kakashi.swift in Sources */ = {isa = PBXBuildFile; fileRef = D326569F291F9B4F0020B1DD /* Kakashi.swift */; };
 		D358524A27F5E9550010CD75 /* StringsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D358524927F5E9550010CD75 /* StringsTable.swift */; };
+		D393A30A2927714400DFF36D /* MethodObfuscate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D393A3092927714400DFF36D /* MethodObfuscate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		D326569F291F9B4F0020B1DD /* Kakashi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kakashi.swift; sourceTree = "<group>"; };
 		D358524827F5E2FD0010CD75 /* StringsTT.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StringsTT.entitlements; sourceTree = "<group>"; };
 		D358524927F5E9550010CD75 /* StringsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringsTable.swift; sourceTree = "<group>"; };
+		D393A3092927714400DFF36D /* MethodObfuscate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodObfuscate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				96B3259627F68B8E000AC8A1 /* TransViewModel.swift */,
 				6F914FD4289B9C4C0052B20D /* LocalFinder.swift */,
 				D326569F291F9B4F0020B1DD /* Kakashi.swift */,
+				D393A3092927714400DFF36D /* MethodObfuscate.swift */,
 				D358524C27F5E9920010CD75 /* ViewController */,
 				D358524D27F5E9A10010CD75 /* Extension */,
 				D358524B27F5E98C0010CD75 /* Model */,
@@ -206,6 +209,7 @@
 				9662349127F15A450036CD0F /* Translator.swift in Sources */,
 				D358524A27F5E9550010CD75 /* StringsTable.swift in Sources */,
 				9600988F27F54E11005AF4F0 /* FileFinder.swift in Sources */,
+				D393A30A2927714400DFF36D /* MethodObfuscate.swift in Sources */,
 				96B3259727F68B8E000AC8A1 /* TransViewModel.swift in Sources */,
 				9625CE9C27F29ABA001C0BCB /* StringFile.swift in Sources */,
 				9600989127F55896005AF4F0 /* Date+YFAdd.swift in Sources */,

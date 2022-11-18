@@ -49,14 +49,22 @@ class ViewController: NSViewController {
     
     /// 点击了查找并导出按钮
     @IBAction func findAndExport(_ sender: NSButton) {
-        findLocalAndExport()
+//        findLocalAndExport()
 //        kakashiAction()
+        obfusecateMethod()
     }
     
     //TODO: 给一键复制工程做个单独的UI， 或者单独app
     func kakashiAction() {
         let kakashi = Kakashi(path: pathField.stringValue, targetPath: tPathField.stringValue)
         kakashi.ninjutsuCopyPaste()
+    }
+    
+    
+    func obfusecateMethod() {
+        let mo = MethodObfuscate()
+        let methods = mo.findAllMethods(at: self.pathField.stringValue)
+        print(methods)
     }
     
     /// 查找某个文件夹下 "国际化".localized 文件并导出

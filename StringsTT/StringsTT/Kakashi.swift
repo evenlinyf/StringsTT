@@ -130,7 +130,7 @@ class Kakashi: NSObject {
             self.outputFiles.append(otFile)
         }
     }
-    
+    //TODO: 需要处理文件内定义的类和结构体等
     private func copyEachFile(file: String) {
         let filePath = self.path + "/" + file
         guard FileManager.default.fileExists(atPath: filePath) else {
