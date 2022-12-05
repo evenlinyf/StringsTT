@@ -33,15 +33,28 @@ class MethodObfuscate: NSObject {
         print("找到了\(subPaths.count)个swift文件")
         subPaths.forEach { subPath in
             let filePath = path + "/" + subPath
+            self.priMethods.removeAll()
             if let fileString = try? File(path: filePath).read() {
+                var toChangeFS = fileString
                 fileString.components(separatedBy: "\n").forEach { line in
                     self.parse(line: line)
                 }
+                let tPrefix = "nov_"
+                //修改私有方法
+                self.priMethods.forEach { method in
+                    if method.hasPrefix(tPrefix) == false {
+                        toChangeFS = toChangeFS.replacingOccurrences(of: "\(method)(", with: "\(tPrefix)\(method)(")
+                        toChangeFS = toChangeFS.replacingOccurrences(of: "#selector(\(method)", with: "#selector(\(tPrefix)\(method)")
+                    }
+                }
+                let toFile = File(path: filePath, contents: "")
+                try? toFile.write(contents: toChangeFS)
             }
         }
         print("☁️ 找到了\(priMethods.count)个 private func , \(pubMethods.count)个public func")
         
         self.methods = Array(priMethods) + Array(pubMethods)
+        parseMethods()
         print("☁️ 大爆炸后各个单词出现的次数为 = ")
         print(keys.sorted(by: {$0.value > $1.value}).enumerated().reduce("", { partialResult, dic in
             return partialResult + dic.element.key + " = " + String(dic.element.value) + "\n"
