@@ -10,49 +10,55 @@ import Foundation
 
 class MethodObfuscate: NSObject {
     
+    /// 文件夹路径
+    private var path: String = ""
+    
+    /// 文件夹子路径 (所有 .swift 路径)
+    private var subPaths: [String] = []
+    
     /// 私有方法集合
     private var priMethods: Set<String> = []
     
     /// 公开方法集合
     private var pubMethods: Set<String> = []
     
+    /// 某个文件的私有方法集合
+    private var filePriMethods: Set<String> = []
+    
+    private var filePriMethodsMap: [String: [String]] = [:]
+    
+    /// 所有的方法
     var methods: [String] = []
     
     /// 记录方法大爆炸后单词出现的次数
     private var keys: [String: Int] = [:]
     
-    
     /// 找出文件路径下所有Swift文件的所有方法
     /// - Parameter path: 文件路径
     func findAllMethods(at path: String) -> [String] {
+        self.path = path
         let subPaths = try? FileFinder.paths(for: ".swift", path: path)
         guard let subPaths = subPaths, subPaths.count > 0 else {
             print("没有找到swift文件")
             return []
         }
+        self.subPaths = subPaths
         print("找到了\(subPaths.count)个swift文件")
         subPaths.forEach { subPath in
             let filePath = path + "/" + subPath
-            self.priMethods.removeAll()
+            //清空当前文件的所有私有方法
+            self.filePriMethods.removeAll()
+            
             if let fileString = try? File(path: filePath).read() {
-                var toChangeFS = fileString
+//                var toChangeFS = fileString
                 fileString.components(separatedBy: "\n").forEach { line in
                     self.parse(line: line)
+                    // 将当前文件所有私有方法当成 value 赋值 给文件路径的 key
+                    self.filePriMethodsMap[filePath] = Array(self.filePriMethods)
                 }
-                let tPrefix = "nov_"
-                //修改私有方法
-                self.priMethods.forEach { method in
-                    if method.hasPrefix(tPrefix) == false {
-                        toChangeFS = toChangeFS.replacingOccurrences(of: "\(method)(", with: "\(tPrefix)\(method)(")
-                        toChangeFS = toChangeFS.replacingOccurrences(of: "#selector(\(method)", with: "#selector(\(tPrefix)\(method)")
-                    }
-                }
-                let toFile = File(path: filePath, contents: "")
-                try? toFile.write(contents: toChangeFS)
             }
         }
-        print("☁️ 找到了\(priMethods.count)个 private func , \(pubMethods.count)个public func")
-        
+        print("☁️ 找到了\(priMethods.count)个 private func , \(pubMethods.count)个public func， 文件对应的方法有\n \(filePriMethodsMap)")
         self.methods = Array(priMethods) + Array(pubMethods)
         parseMethods()
         print("☁️ 大爆炸后各个单词出现的次数为 = ")
@@ -62,22 +68,25 @@ class MethodObfuscate: NSObject {
         return methods
     }
     
-    /// 解析文件的每一行
+    /// 解析文件的每一行, 解析方法
     private func parse(line: String) {
         var shLine = line.replacingOccurrences(of: " ", with: "")
+        
         //公开方法
-        if shLine.hasPrefix("func") || shLine.hasPrefix("publicfunc") {
+        if shLine.hasPrefix("func") || shLine.hasPrefix("publicfunc") || shLine.hasPrefix("internalfunc") || shLine.hasPrefix("openfunc") {
             shLine = shLine.replacingOccurrences(of: "publicfunc", with: "")
             shLine = shLine.replacingOccurrences(of: "func", with: "")
+            shLine = shLine.replacingOccurrences(of: "internalfunc", with: "")
+            shLine = shLine.replacingOccurrences(of: "openfunc", with: "")
             shLine = shLine.components(separatedBy: "(").first ?? "⚠️⚠️⚠️⚠️"
             pubMethods.insert(shLine)
         }
         //私有方法
-        if shLine.hasPrefix("privatefunc") {
+        if shLine.hasPrefix("privatefunc") || shLine.hasPrefix("fileprivatefunc") {
+            shLine = shLine.replacingOccurrences(of: "fileprivatefunc", with: "")
             shLine = shLine.replacingOccurrences(of: "privatefunc", with: "").components(separatedBy: "(").first ?? "⚠️⚠️⚠️⚠️"
+            filePriMethods.insert(shLine)
             priMethods.insert(shLine)
-//                        var tString = fileString.replacingOccurrences(of: shLine, with: "prefix_shLine")
-//                        let tFile = File(path: filePath).write(contents: tString)
         }
         
     }
@@ -99,5 +108,60 @@ class MethodObfuscate: NSObject {
                 }
             }
         }
+    }
+}
+
+extension MethodObfuscate {
+    /// 混淆方法名
+    func obfuscateMethods() {
+        print("开始混淆")
+        let startTime = Date()
+        // 遍历每一个文件
+        subPaths.forEach { subPath in
+            let filePath = path + "/" + subPath
+            if var fileString = try? File(path: filePath).read() {
+                let oPrefix = "oldPrefix_"
+                let tPrefix = "nov_"
+                if let priMethods = self.filePriMethodsMap[filePath], priMethods.count > 0 {
+                    // 替换私有方法
+                    priMethods.forEach { method in
+                        var tMethod = method
+                        if method.hasPrefix(tPrefix) == false {
+                            if method.hasPrefix(oPrefix) {
+                                tMethod = method.replacingOccurrences(of: oPrefix, with: tPrefix)
+                            } else {
+                                tMethod = tPrefix + method
+                            }
+                            fileString = fileString.replacingOccurrences(of: "\(method)(", with: "\(tMethod)(")
+                            fileString = fileString.replacingOccurrences(of: "#selector(\(method)", with: "#selector(\(tMethod)")
+                        }
+                    }
+                }
+                
+                // 替换公有方法
+                pubMethods.forEach { method in
+                    if fileString.contains(".\(method)(") || fileString.contains("func \(method)") {
+                        var tMethod = method
+                        if method.hasPrefix(tPrefix) == false {
+                            if method.hasPrefix(oPrefix) {
+                                tMethod = method.replacingOccurrences(of: oPrefix, with: tPrefix)
+                            } else {
+                                tMethod = tPrefix + method
+                            }
+                            // 替换原有方法的字符串
+                            fileString = fileString.replacingOccurrences(of: "func \(method)", with: "func \(tMethod)")
+                            // 替换文件中调用方法的字符串
+                            fileString = fileString.replacingOccurrences(of: ".\(method)(", with: ".\(tMethod)(")
+                        }
+                    }
+                }
+                let toFile = File(path: filePath, contents: "")
+                try? toFile.write(contents: fileString)
+            }
+        }
+        let timeInterval = Date().timeIntervalSince(startTime)
+        
+        print("混淆完成")
+        print("耗时\(timeInterval)")
     }
 }

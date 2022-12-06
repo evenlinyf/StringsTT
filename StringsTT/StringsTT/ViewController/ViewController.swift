@@ -60,11 +60,12 @@ class ViewController: NSViewController {
         kakashi.ninjutsuCopyPaste()
     }
     
-    
+    // 混淆方法名
     func obfusecateMethod() {
         let mo = MethodObfuscate()
         let methods = mo.findAllMethods(at: self.pathField.stringValue)
         print(methods)
+        mo.obfuscateMethods()
     }
     
     /// 查找某个文件夹下 "国际化".localized 文件并导出
