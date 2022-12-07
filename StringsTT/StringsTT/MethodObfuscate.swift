@@ -60,7 +60,7 @@ class MethodObfuscate: NSObject {
         }
         print("☁️ 找到了\(priMethods.count)个 private func , \(pubMethods.count)个public func， 文件对应的方法有\n \(filePriMethodsMap)")
         self.methods = Array(priMethods) + Array(pubMethods)
-        parseMethods()
+        methodExplosion()
         print("☁️ 大爆炸后各个单词出现的次数为 = ")
         print(keys.sorted(by: {$0.value > $1.value}).enumerated().reduce("", { partialResult, dic in
             return partialResult + dic.element.key + " = " + String(dic.element.value) + "\n"
@@ -79,10 +79,12 @@ class MethodObfuscate: NSObject {
             shLine = shLine.replacingOccurrences(of: "internalfunc", with: "")
             shLine = shLine.replacingOccurrences(of: "openfunc", with: "")
             shLine = shLine.components(separatedBy: "(").first ?? "⚠️⚠️⚠️⚠️"
-            pubMethods.insert(shLine)
+            if isSystemMethod(shLine) == false {
+                pubMethods.insert(shLine)
+            }
         }
         //私有方法
-        if shLine.hasPrefix("privatefunc") || shLine.hasPrefix("fileprivatefunc") {
+        if shLine.contains("privatefunc") {
             shLine = shLine.replacingOccurrences(of: "fileprivatefunc", with: "")
             shLine = shLine.replacingOccurrences(of: "privatefunc", with: "").components(separatedBy: "(").first ?? "⚠️⚠️⚠️⚠️"
             filePriMethods.insert(shLine)
@@ -91,8 +93,37 @@ class MethodObfuscate: NSObject {
         
     }
     
+    private func isSystemMethod(_ method: String) -> Bool {
+        let systemMethods: [String] = [
+            "init",
+            "viewDidLoad",
+            "navigationController",
+            "gesture",
+            "numberOf",
+            "pagerView",
+            "tableView",
+            "collectionView",
+            "scrollView",
+            "textView",
+            "textField",
+            "tabBarController",
+            "mapping",
+            "color",
+            "transformFromJSON",
+            "transformToJSON",
+            "webSocket", "svgaPlayerDidFinish",
+            "load", "download"
+        ]
+        for m in systemMethods {
+            if method.hasPrefix(m) {
+                return true
+            }
+        }
+        return false
+    }
+    
     /// 方法大爆炸
-    private func parseMethods() {
+    private func methodExplosion() {
         for method in methods {
             var small: String = ""
             method.forEach { char in
@@ -133,6 +164,7 @@ extension MethodObfuscate {
                                 tMethod = tPrefix + method
                             }
                             fileString = fileString.replacingOccurrences(of: "\(method)(", with: "\(tMethod)(")
+                            fileString = fileString.replacingOccurrences(of: "\(method) {", with: "\(tMethod) {")
                             fileString = fileString.replacingOccurrences(of: "#selector(\(method)", with: "#selector(\(tMethod)")
                         }
                     }
