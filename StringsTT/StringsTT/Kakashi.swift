@@ -71,6 +71,8 @@ class Kakashi: NSObject {
     private var startTime: Date?
     private var endTime: Date?
     
+    var progress: YFProgress?
+    
     convenience init(path: String, targetPath: String) {
         self.init()
         self.path = path
@@ -81,10 +83,12 @@ class Kakashi: NSObject {
     func ninjutsuCopyPaste() {
         
         startTime = Date()
-        print("🐝🐝🐝 开始处理\ntime = \(startTime!.timeString())")
+        YFLog("🐝🐝🐝 开始处理\ntime = \(startTime!.timeString())")
+        self.progress?.onProgress?("🐝🐝🐝 开始处理\ntime = \(startTime!.timeString())")
         findSubPaths()
         upgradeNojiezi()
-        print("🐝🐝🐝 处理完成, 正在导出\(outputFiles.count)个文件到\(self.tPath)")
+        YFLog("🐝🐝🐝 处理完成, 正在导出\(outputFiles.count)个文件到\(self.tPath)")
+        self.progress?.onProgress?("🐝🐝🐝 处理完成, 正在导出\(outputFiles.count)个文件到\(self.tPath)")
         outputFiles.forEach { file in
             do {
                 let dir = (file.path as NSString).deletingLastPathComponent
@@ -93,12 +97,13 @@ class Kakashi: NSObject {
                 }
                 try file.write()
             } catch let error {
-                print(error.localizedDescription)
+                YFLog(error.localizedDescription)
             }
         }
         endTime = Date()
         let ti = endTime!.timeIntervalSince(startTime!)
-        print("🐝🐝🐝 导出成功 🎉🎉🎉, 耗时\(ti)秒 \ntime = \(endTime!.timeString())")
+        YFLog("🐝🐝🐝 导出成功 🎉🎉🎉, 耗时\(ti)秒 \ntime = \(endTime!.timeString())")
+        self.progress?.onComplete?("🐝🐝🐝 导出成功 🎉🎉🎉, 耗时\(ti)秒 \ntime = \(endTime!.timeString())")
     }
     
     /// 修改
@@ -107,10 +112,12 @@ class Kakashi: NSObject {
             //处理文件路径和文件名， 存储需要替换的类名
             self.copyEachFile(file: file)
         }
-        print("🐝🐝🐝 准备了\(files.count)个待处理的文件, 需要替换的类名有\n\(tmNames)\n<<<<<<<<<<")
+        YFLog("🐝🐝🐝 准备了\(files.count)个待处理的文件, 需要替换的类名有\n\(tmNames)\n<<<<<<<<<<")
+        self.progress?.onProgress?("🐝🐝🐝 准备了\(files.count)个待处理的文件, 需要替换的类名有\n\(tmNames)\n<<<<<<<<<<")
         
         for file in files {
-            print("🐝 正在处理 \(file.name)")
+            YFLog("🐝 正在处理 \(file.name)")
+            self.progress?.onProgress?("🐝 正在处理 \(file.name)")
 //            let otFilePath = tPath + "/" + file.name
             let otFilePath = file.path
             var otFile = File(path: otFilePath)
@@ -122,7 +129,8 @@ class Kakashi: NSObject {
             var otFileString = otLines.joined(separator: "\n")
             for (key, value) in tmNames {
                 if otFileString.contains(key) {
-                    print("正在将\(key)替换成\(value)")
+                    YFLog("正在将\(key)替换成\(value)")
+                    self.progress?.onProgress?("正在将\(key)替换成\(value)")
                     otFileString = otFileString.replacingOccurrences(of: key, with: value)
                 }
             }
@@ -134,7 +142,7 @@ class Kakashi: NSObject {
     private func copyEachFile(file: String) {
         let filePath = self.path + "/" + file
         guard FileManager.default.fileExists(atPath: filePath) else {
-            print("🈲 文件不存在")
+            YFLog("🈲 文件不存在")
             return
         }
         let readFile = File(path: filePath)
@@ -196,6 +204,7 @@ extension Kakashi {
                 self.subPaths.append(contentsOf: sub)
             }
         }
-        print("找到了\(subPaths.count)个文件 >>> \(subPaths)")
+        YFLog("找到了\(subPaths.count)个文件 >>> \(subPaths)")
+        self.progress?.onProgress?("找到了\(subPaths.count)个文件 >>> \(subPaths)")
     }
 }

@@ -31,7 +31,7 @@ class TransViewModel: NSObject {
         tFile.path = tFilePath
         
         guard file.dic.count > 0 else {
-            print("待翻译的Strings文件没有任何内容， 请检查")
+            YFLog("待翻译的Strings文件没有任何内容， 请检查")
             return
         }
         
@@ -61,7 +61,7 @@ class TransViewModel: NSObject {
                 group.enter()
                 let key = self.ttKeys[i]
                 let content = self.file.dic[key]!
-                print("进行到[\(i)]， 正在翻译\(content)")
+                YFLog("进行到[\(i)]， 正在翻译\(content)")
                 Translator.translate(content: content, language: self.language) { result in
                     defer {
                         sema.signal()

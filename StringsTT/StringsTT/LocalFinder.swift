@@ -15,6 +15,7 @@ class LocalFinder: NSObject {
     private var regex: String = ""
     private var path: String = ""
     private var fileTypes: [String] = []
+    var progress: YFProgress?
     
     /// 找到某个文件夹下所有包含文件类型中符合正则表达式的结果
     /// Find all the strings which matches the regex in the filetypes under the path
@@ -50,9 +51,11 @@ class LocalFinder: NSObject {
     }
     
     private func separateFileToLines(path: String) {
-        print("开始解析文件\(path)")
+        YFLog("开始解析文件\(path)")
+        self.progress?.onProgress?("开始解析文件\(path)")
         guard FileManager.default.fileExists(atPath: path) else {
-            print("文件不存在\(path)")
+            YFLog("文件不存在\(path)")
+            self.progress?.onComplete?("文件不存在\(path)")
             return
         }
         let file = File(path: path)
@@ -72,8 +75,9 @@ class LocalFinder: NSObject {
                 }
             }
         }
-        print(localKeys)
-        print("找到符合正则\(regex)的字符串\(localKeys.count)条")
+        YFLog(localKeys)
+        YFLog("找到符合正则\(regex)的字符串\(localKeys.count)条")
+        self.progress?.onComplete?("找到符合正则\(regex)的字符串\(localKeys.count)条")
     }
     
     func exportFile() {

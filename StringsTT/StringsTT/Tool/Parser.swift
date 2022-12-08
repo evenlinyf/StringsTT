@@ -29,7 +29,7 @@ struct Parser {
         """ + sortedDict.reduce("") {
             $0 + "\n\($1.0) = \"\($1.1)\";"
         }
-//        print(fileString)
+//        YFLog(fileString)
         return fileString
     }
     

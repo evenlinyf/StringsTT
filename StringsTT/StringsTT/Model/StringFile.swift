@@ -25,7 +25,7 @@ struct StringFile {
         }
         
         guard FileManager.default.fileExists(atPath: path) else {
-            print("文件不存在\(path)")
+            YFLog("文件不存在\(path)")
             return
         }
         let file = File(path: path)
@@ -34,7 +34,7 @@ struct StringFile {
             dic = Parser.convertToDic(string: mapString)
             keys = (dic as NSDictionary).allKeys as! [String]
         } catch let error {
-            print(error.localizedDescription)
+            YFLog(error.localizedDescription)
         }
     }
     
@@ -51,7 +51,7 @@ struct StringFile {
         do {
             try File(path: outputPath).write(contents: outputString)
         } catch let error {
-            print(error.localizedDescription)
+            YFLog(error.localizedDescription)
         }
     }
 }

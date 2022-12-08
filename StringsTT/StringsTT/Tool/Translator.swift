@@ -42,12 +42,12 @@ struct Translator {
                 }
                 if let translatedString = respDic["data"] as? String {
                     complete(translatedString)
-                    print("🌏 \(content) ---> \(translatedString)")
+                    YFLog("🌏 \(content) ---> \(translatedString)")
                 } else {
                     complete(nil)
                 }
             } else {
-                print("转换失败")
+                YFLog("转换失败")
                 complete(nil)
             }
         }

@@ -33,17 +33,20 @@ class MethodObfuscate: NSObject {
     /// 记录方法大爆炸后单词出现的次数
     private var keys: [String: Int] = [:]
     
+    var progress: YFProgress?
+    
     /// 找出文件路径下所有Swift文件的所有方法
     /// - Parameter path: 文件路径
     func findAllMethods(at path: String) -> [String] {
         self.path = path
         let subPaths = try? FileFinder.paths(for: ".swift", path: path)
         guard let subPaths = subPaths, subPaths.count > 0 else {
-            print("没有找到swift文件")
+            YFLog("没有找到swift文件")
             return []
         }
         self.subPaths = subPaths
-        print("找到了\(subPaths.count)个swift文件")
+        YFLog("找到了\(subPaths.count)个swift文件")
+        self.progress?.onProgress?("找到了\(subPaths.count)个swift文件")
         subPaths.forEach { subPath in
             let filePath = path + "/" + subPath
             //清空当前文件的所有私有方法
@@ -58,11 +61,12 @@ class MethodObfuscate: NSObject {
                 }
             }
         }
-        print("☁️ 找到了\(priMethods.count)个 private func , \(pubMethods.count)个public func， 文件对应的方法有\n \(filePriMethodsMap)")
+        YFLog("☁️ 找到了\(priMethods.count)个 private func , \(pubMethods.count)个public func， 文件对应的方法有\n \(filePriMethodsMap)")
+        self.progress?.onProgress?("☁️ 找到了\(priMethods.count)个 private func , \(pubMethods.count)个public func")
         self.methods = Array(priMethods) + Array(pubMethods)
         methodExplosion()
-        print("☁️ 大爆炸后各个单词出现的次数为 = ")
-        print(keys.sorted(by: {$0.value > $1.value}).enumerated().reduce("", { partialResult, dic in
+        YFLog("☁️ 大爆炸后各个单词出现的次数为 = ")
+        YFLog(keys.sorted(by: {$0.value > $1.value}).enumerated().reduce("", { partialResult, dic in
             return partialResult + dic.element.key + " = " + String(dic.element.value) + "\n"
         }))
         return methods
@@ -145,7 +149,8 @@ class MethodObfuscate: NSObject {
 extension MethodObfuscate {
     /// 混淆方法名
     func obfuscateMethods() {
-        print("开始混淆")
+        YFLog("开始混淆")
+        self.progress?.onProgress?("开始混淆")
         let startTime = Date()
         // 遍历每一个文件
         subPaths.forEach { subPath in
@@ -192,8 +197,7 @@ extension MethodObfuscate {
             }
         }
         let timeInterval = Date().timeIntervalSince(startTime)
-        
-        print("混淆完成")
-        print("耗时\(timeInterval)")
+        YFLog("混淆完成, 耗时\(timeInterval)")
+        self.progress?.onComplete?("混淆完成, 耗时\(timeInterval)")
     }
 }

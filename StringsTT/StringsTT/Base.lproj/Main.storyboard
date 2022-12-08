@@ -111,9 +111,9 @@
                                                 <action selector="runPageLayout:" target="Ady-hI-5gd" id="Din-rz-gC5"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Print…" keyEquivalent="p" id="aTl-1u-JFS">
+                                        <menuItem title="YFLog…" keyEquivalent="p" id="aTl-1u-JFS">
                                             <connections>
-                                                <action selector="print:" target="Ady-hI-5gd" id="qaZ-4w-aoO"/>
+                                                <action selector="YFLog:" target="Ady-hI-5gd" id="qaZ-4w-aoO"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -728,12 +728,12 @@
                                 </connections>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nrV-jg-5rQ">
-                                <rect key="frame" x="200" y="20" width="100" height="40"/>
+                                <rect key="frame" x="356" y="20" width="100" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="ZjD-Ul-gqd"/>
                                     <constraint firstAttribute="width" constant="100" id="omm-Xh-5Zm"/>
                                 </constraints>
-                                <buttonCell key="cell" type="inline" title="一键翻译" bezelStyle="inline" imagePosition="overlaps" alignment="center" borderStyle="border" inset="2" id="Aeg-mv-fCj">
+                                <buttonCell key="cell" type="inline" title="确认" bezelStyle="inline" imagePosition="overlaps" alignment="center" borderStyle="border" inset="2" id="Aeg-mv-fCj">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="smallSystemBold"/>
                                 </buttonCell>
@@ -746,7 +746,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="450" id="ukO-Bv-yRf"/>
                                 </constraints>
-                                <textFieldCell key="cell" alignment="center" title="等待翻译" id="41v-CS-yxR">
+                                <textFieldCell key="cell" alignment="center" title="请选择功能" id="41v-CS-yxR">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -782,7 +782,7 @@
                                 </connections>
                             </comboBox>
                             <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="smE-IZ-veC">
-                                <rect key="frame" x="308" y="32" width="16" height="16"/>
+                                <rect key="frame" x="464" y="32" width="16" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="16" id="DrK-JS-aiJ"/>
                                     <constraint firstAttribute="height" constant="16" id="jF7-xU-dkP"/>
@@ -827,31 +827,39 @@
                                     <action selector="parseFilePath:" target="XfG-lQ-9wD" id="MDp-Ib-nkR"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0xD-Jp-8BU">
-                                <rect key="frame" x="41" y="23" width="120" height="32"/>
-                                <buttonCell key="cell" type="push" title="查找导出.local" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZaQ-UK-Pzj">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Uid-5C-Zf6">
+                                <rect key="frame" x="19" y="28" width="320" height="23"/>
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="请选择功能" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="AMG-82-LDw">
                                     <font key="font" metaFont="system"/>
-                                </buttonCell>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <objectValues>
+                                        <string>翻译</string>
+                                        <string>导出</string>
+                                        <string>复制</string>
+                                        <string>混淆</string>
+                                    </objectValues>
+                                </comboBoxCell>
                                 <connections>
-                                    <action selector="findAndExport:" target="XfG-lQ-9wD" id="6It-qs-07h"/>
+                                    <action selector="didSelectAction:" target="XfG-lQ-9wD" id="e3g-fe-rST"/>
                                 </connections>
-                            </button>
+                            </comboBox>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="Uid-5C-Zf6" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="02a-mZ-xry"/>
                             <constraint firstItem="bsu-UE-ewa" firstAttribute="width" secondItem="guj-vO-BCa" secondAttribute="width" id="0eJ-A1-C1Q"/>
                             <constraint firstItem="S6v-KI-LDg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="1xS-uf-v4p"/>
                             <constraint firstItem="n21-NP-VVz" firstAttribute="leading" secondItem="guj-vO-BCa" secondAttribute="trailing" constant="8" symbolic="YES" id="4oh-v8-J20"/>
                             <constraint firstAttribute="trailing" secondItem="Dzm-Tp-9pl" secondAttribute="trailing" constant="20" symbolic="YES" id="54N-DD-dVL"/>
                             <constraint firstItem="guj-vO-BCa" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="65B-Wc-O9K"/>
                             <constraint firstItem="bsu-UE-ewa" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="6wI-d4-wnG"/>
-                            <constraint firstItem="nrV-jg-5rQ" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="9B2-BL-ntl"/>
+                            <constraint firstAttribute="trailing" secondItem="smE-IZ-veC" secondAttribute="trailing" constant="20" id="81d-zg-P0P"/>
                             <constraint firstItem="smE-IZ-veC" firstAttribute="centerY" secondItem="nrV-jg-5rQ" secondAttribute="centerY" id="Ak0-7v-auy"/>
-                            <constraint firstItem="0xD-Jp-8BU" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="48" id="BKn-Gl-RO7"/>
-                            <constraint firstItem="0xD-Jp-8BU" firstAttribute="centerY" secondItem="nrV-jg-5rQ" secondAttribute="centerY" id="BiA-r2-nkI"/>
                             <constraint firstItem="S6v-KI-LDg" firstAttribute="centerY" secondItem="m2S-Jp-Qdl" secondAttribute="centerY" id="C7k-hw-bPM"/>
+                            <constraint firstItem="Uid-5C-Zf6" firstAttribute="centerY" secondItem="nrV-jg-5rQ" secondAttribute="centerY" id="CgT-Uo-C6j"/>
                             <constraint firstItem="Glr-Qi-l01" firstAttribute="centerY" secondItem="bsu-UE-ewa" secondAttribute="centerY" id="Gzm-za-SBH"/>
                             <constraint firstItem="smE-IZ-veC" firstAttribute="leading" secondItem="nrV-jg-5rQ" secondAttribute="trailing" constant="8" symbolic="YES" id="JcW-cY-Awo"/>
+                            <constraint firstItem="nrV-jg-5rQ" firstAttribute="leading" secondItem="Uid-5C-Zf6" secondAttribute="trailing" constant="20" id="MEe-g3-O0q"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="S6v-KI-LDg" secondAttribute="trailing" id="T9l-ez-ek3"/>
                             <constraint firstItem="guj-vO-BCa" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="Z1V-UN-Ls9"/>
                             <constraint firstItem="Dzm-Tp-9pl" firstAttribute="leading" secondItem="n21-NP-VVz" secondAttribute="trailing" constant="12" symbolic="YES" id="ci4-Zm-YAr"/>
@@ -864,6 +872,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="allActions" destination="Uid-5C-Zf6" id="UrC-Se-lak"/>
                         <outlet property="helpBtn" destination="Dzm-Tp-9pl" id="TYO-AF-70t"/>
                         <outlet property="indicator" destination="smE-IZ-veC" id="F6S-U8-YQa"/>
                         <outlet property="label" destination="S6v-KI-LDg" id="kdw-co-aeA"/>
@@ -875,7 +884,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-463" y="821"/>
+            <point key="canvasLocation" x="-599" y="812"/>
         </scene>
     </scenes>
 </document>
