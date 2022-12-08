@@ -163,14 +163,27 @@ extension ViewController {
         self.indicator.stopAnimation(nil)
     }
     
-    //TODO: 给一键复制工程做个单独的UI， 或者单独app
+    // 一键复制工程
     func kakashiAction() {
+        guard pathField.stringValue.count > 0 && tPathField.stringValue.count > 0 else {
+            showTip("⚠️⚠️⚠️ 请指定工程路径和导出路径 ⚠️⚠️⚠️")
+            return
+        }
         let kakashi = Kakashi(path: pathField.stringValue, targetPath: tPathField.stringValue)
+        kakashi.progress = YFProgress(progress: { value in
+            self.showTip(value)
+        }, complete: { value in
+            self.showTip(value)
+        })
         kakashi.ninjutsuCopyPaste()
     }
     
     // 混淆方法名
     func obfusecateMethod() {
+        guard pathField.stringValue.count > 0 else {
+            showTip("⚠️⚠️⚠️ 请指定工程路径 ⚠️⚠️⚠️")
+            return
+        }
         let mo = MethodObfuscate()
         let methods = mo.findAllMethods(at: self.pathField.stringValue)
         YFLog(methods)
