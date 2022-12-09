@@ -78,19 +78,14 @@ class MethodObfuscate: NSObject {
         
         //公开方法
         if shLine.hasPrefix("func") || shLine.hasPrefix("publicfunc") || shLine.hasPrefix("internalfunc") || shLine.hasPrefix("openfunc") {
-            shLine = shLine.replacingOccurrences(of: "publicfunc", with: "")
-            shLine = shLine.replacingOccurrences(of: "func", with: "")
-            shLine = shLine.replacingOccurrences(of: "internalfunc", with: "")
-            shLine = shLine.replacingOccurrences(of: "openfunc", with: "")
-            shLine = shLine.components(separatedBy: "(").first ?? "⚠️⚠️⚠️⚠️"
+            shLine = shLine.components(separatedBy: "func").last?.components(separatedBy: "(").first ?? "⚠️⚠️⚠️⚠️"
             if isSystemMethod(shLine) == false {
                 pubMethods.insert(shLine)
             }
         }
         //私有方法
         if shLine.contains("privatefunc") {
-            shLine = shLine.replacingOccurrences(of: "fileprivatefunc", with: "")
-            shLine = shLine.replacingOccurrences(of: "privatefunc", with: "").components(separatedBy: "(").first ?? "⚠️⚠️⚠️⚠️"
+            shLine = shLine.components(separatedBy: "func").last?.components(separatedBy: "(").first ?? "⚠️⚠️⚠️⚠️"
             filePriMethods.insert(shLine)
             priMethods.insert(shLine)
         }
@@ -115,8 +110,11 @@ class MethodObfuscate: NSObject {
             "color",
             "transformFromJSON",
             "transformToJSON",
-            "webSocket", "svgaPlayerDidFinish",
-            "load", "download"
+            "webSocket",
+            "svgaPlayerDidFinish",
+            "load",
+            "download",
+            "xgPush"
         ]
         for m in systemMethods {
             if method.hasPrefix(m) {
@@ -189,6 +187,8 @@ extension MethodObfuscate {
                             fileString = fileString.replacingOccurrences(of: "func \(method)", with: "func \(tMethod)")
                             // 替换文件中调用方法的字符串
                             fileString = fileString.replacingOccurrences(of: ".\(method)(", with: ".\(tMethod)(")
+                            // 替换文件中有尾随闭包的方法字符串
+                            fileString = fileString.replacingOccurrences(of: ".\(method) {", with: ".\(tMethod) {")
                         }
                     }
                 }

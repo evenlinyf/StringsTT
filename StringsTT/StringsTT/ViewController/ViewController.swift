@@ -169,13 +169,19 @@ extension ViewController {
             showTip("⚠️⚠️⚠️ 请指定工程路径和导出路径 ⚠️⚠️⚠️")
             return
         }
+        self.indicator.startAnimation(nil)
         let kakashi = Kakashi(path: pathField.stringValue, targetPath: tPathField.stringValue)
         kakashi.progress = YFProgress(progress: { value in
             self.showTip(value)
         }, complete: { value in
             self.showTip(value)
+            DispatchQueue.main.async {
+                self.indicator.stopAnimation(nil)
+            }
         })
-        kakashi.ninjutsuCopyPaste()
+        DispatchQueue.global().async {
+            kakashi.ninjutsuCopyPaste()
+        }
     }
     
     // 混淆方法名
@@ -184,9 +190,20 @@ extension ViewController {
             showTip("⚠️⚠️⚠️ 请指定工程路径 ⚠️⚠️⚠️")
             return
         }
+        self.indicator.startAnimation(nil)
         let mo = MethodObfuscate()
+        mo.progress = YFProgress(progress: { value in
+            self.showTip(value)
+        }, complete: { value in
+            self.showTip(value)
+            DispatchQueue.main.async {
+                self.indicator.stopAnimation(nil)
+            }
+        })
         let methods = mo.findAllMethods(at: self.pathField.stringValue)
         YFLog(methods)
-        mo.obfuscateMethods()
+        DispatchQueue.global().async {
+            mo.obfuscateMethods()
+        }
     }
 }
